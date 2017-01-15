@@ -57,10 +57,11 @@
                 <p>@Resource.Price:</p>
                 @(Html.Kendo().RangeSlider()
                   .Name("price")
-                  .Min((double)Model.PriceFilter.Minimum)
-                  .Max((double)Model.PriceFilter.Maximum)
+                  .Min((int)@Math.Floor(Model.PriceFilter.Minimum))
+                  .Max((int)@Math.Ceiling(Model.PriceFilter.Maximum))
                   .SmallStep(1)
                   .LargeStep(10)
+                  .Tooltip(tooltip => tooltip.Enabled(true).Format("{0:n}"))
                   .Events(x => x.Change("sendData"))
                   .HtmlAttributes(new { id = "priceRange", @class = "filterOption" }))
             }

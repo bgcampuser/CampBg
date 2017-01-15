@@ -72,38 +72,10 @@
             if (Thread.CurrentThread.CurrentCulture.Name == "bg-BG")
             {
                 model = new FilterPageViewModel
-                            {
-                                InitialProducts = products.Select(ProductListViewModel.FromProduct),
-                                Filters = new FilterContainerViewModel()
-                            };
-
-                model.Filters.PropertyFilter =
-                    products.SelectMany(x => x.PropertyValues)
-                        .GroupBy(x => x.Property)
-                        .Select(
-                            x =>
-                            new ProductPropertyViewModel
-                                {
-                                    Name = x.Key.Name,
-                                    PropertyId = x.Key.Id,
-                                    Values =
-                                        x.Distinct()
-                                        .OrderBy(v => v.Value)
-                                        .Select(
-                                            z =>
-                                            new PropertyValueViewModel
-                                                {
-                                                    Id = z.Id,
-                                                    Value = z.Value
-                                                })
-                                })
-                        .ToList();
-            }
-            else
-            {
-                model = new FilterPageViewModel
                 {
-                    InitialProducts = products.Select(ProductListViewModel.FromProductEn),
+                    InitialProducts = products
+                                    .Select(ProductListViewModel.FromProduct)
+                                    .OrderBy(x => x.Name),
                     Filters = new FilterContainerViewModel()
                 };
 
@@ -113,20 +85,52 @@
                         .Select(
                             x =>
                             new ProductPropertyViewModel
-                                {
-                                    Name = x.Key.NameEn,
-                                    PropertyId = x.Key.Id,
-                                    Values =
+                            {
+                                Name = x.Key.Name,
+                                PropertyId = x.Key.Id,
+                                Values =
                                         x.Distinct()
                                         .OrderBy(v => v.Value)
                                         .Select(
                                             z =>
                                             new PropertyValueViewModel
-                                                {
-                                                    Id = z.Id,
-                                                    Value = z.Value
-                                                })
-                                })
+                                            {
+                                                Id = z.Id,
+                                                Value = z.Value
+                                            })
+                            })
+                        .ToList();
+            }
+            else
+            {
+                model = new FilterPageViewModel
+                {
+                    InitialProducts = products
+                        .Select(ProductListViewModel.FromProductEn)
+                        .OrderBy(x => x.Name),
+                    Filters = new FilterContainerViewModel()
+                };
+
+                model.Filters.PropertyFilter =
+                    products.SelectMany(x => x.PropertyValues)
+                        .GroupBy(x => x.Property)
+                        .Select(
+                            x =>
+                            new ProductPropertyViewModel
+                            {
+                                Name = x.Key.NameEn,
+                                PropertyId = x.Key.Id,
+                                Values =
+                                        x.Distinct()
+                                        .OrderBy(v => v.Value)
+                                        .Select(
+                                            z =>
+                                            new PropertyValueViewModel
+                                            {
+                                                Id = z.Id,
+                                                Value = z.Value
+                                            })
+                            })
                         .ToList();
             }
 
@@ -157,12 +161,13 @@
             if (Thread.CurrentThread.CurrentCulture.Name == "bg-BG")
             {
                 model = new FilterPageViewModel
-                            {
-                                InitialProducts =
-                                    this.GetProductsInSubcategory(name, category)
-                                    .Select(ProductListViewModel.FromProduct),
-                                Filters = new FilterContainerViewModel()
-                            };
+                {
+                    InitialProducts =
+                                    GetProductsInSubcategory(name, category)
+                                    .Select(ProductListViewModel.FromProduct)
+                                    .OrderBy(x => x.Name),
+                    Filters = new FilterContainerViewModel()
+                };
 
                 model.Filters.PropertyFilter =
                     products.SelectMany(x => x.PropertyValues)
@@ -170,20 +175,20 @@
                         .Select(
                             x =>
                             new ProductPropertyViewModel
-                                {
-                                    Name = x.Key.Name,
-                                    PropertyId = x.Key.Id,
-                                    Values =
+                            {
+                                Name = x.Key.Name,
+                                PropertyId = x.Key.Id,
+                                Values =
                                         x.Distinct()
                                         .OrderBy(v => v.Value)
                                         .Select(
                                             z =>
                                             new PropertyValueViewModel
-                                                {
-                                                    Id = z.Id,
-                                                    Value = z.Value
-                                                })
-                                })
+                                            {
+                                                Id = z.Id,
+                                                Value = z.Value
+                                            })
+                            })
                         .ToList();
             }
             else
@@ -192,7 +197,8 @@
                 {
                     InitialProducts =
                         this.GetProductsInSubcategory(name, category)
-                        .Select(ProductListViewModel.FromProductEn),
+                        .Select(ProductListViewModel.FromProductEn)
+                        .OrderBy(x => x.Name),
                     Filters = new FilterContainerViewModel()
                 };
 
@@ -231,10 +237,10 @@
                     .Select(ManufacturerViewModel.FromManufacturer);
 
             model.Filters.PriceFilter = new PriceViewModel
-                                            {
-                                                Maximum = products.Any() ? products.Max(z => z.Price) : 0m,
-                                                Minimum = products.Any() ? products.Min(z => z.Price) : 0m,
-                                            };
+            {
+                Maximum = products.Any() ? products.Max(z => z.Price) : 0m,
+                Minimum = products.Any() ? products.Min(z => z.Price) : 0m,
+            };
 
             this.ViewBag.Category = category;
             this.ViewBag.Subcategory = name;
@@ -260,14 +266,16 @@
             if (Thread.CurrentThread.CurrentCulture.Name == "bg-BG")
             {
                 model = new FilterPageViewModel
-                            {
-                                InitialProducts =
+                {
+                    InitialProducts =
                                     this.GetProductsInSubcategoryOption(
                                         subcategory,
                                         category,
-                                        subcategoryOption).Select(ProductListViewModel.FromProduct),
-                                Filters = new FilterContainerViewModel()
-                            };
+                                        subcategoryOption)
+                                        .Select(ProductListViewModel.FromProduct)
+                                        .OrderBy(x => x.Name),
+                    Filters = new FilterContainerViewModel()
+                };
 
                 model.Filters.PropertyFilter =
                     products.SelectMany(x => x.PropertyValues)
@@ -275,20 +283,20 @@
                         .Select(
                             x =>
                             new ProductPropertyViewModel
-                                {
-                                    Name = x.Key.Name,
-                                    PropertyId = x.Key.Id,
-                                    Values =
+                            {
+                                Name = x.Key.Name,
+                                PropertyId = x.Key.Id,
+                                Values =
                                         x.Distinct()
                                         .OrderBy(v => v.Value)
                                         .Select(
                                             z =>
                                             new PropertyValueViewModel
-                                                {
-                                                    Id = z.Id,
-                                                    Value = z.Value
-                                                })
-                                })
+                                            {
+                                                Id = z.Id,
+                                                Value = z.Value
+                                            })
+                            })
                         .ToList();
             }
             else
@@ -299,7 +307,9 @@
                         this.GetProductsInSubcategoryOption(
                             subcategory,
                             category,
-                            subcategoryOption).Select(ProductListViewModel.FromProductEn),
+                            subcategoryOption)
+                            .Select(ProductListViewModel.FromProductEn)
+                            .OrderBy(x => x.Name),
                     Filters = new FilterContainerViewModel()
                 };
 
@@ -358,7 +368,7 @@
         }
 
         [HttpPost]
-        public ActionResult ByManufacturer(FilterViewModel filter, string name, OrderByType orderBy, OrderType orderType, int page = 0)
+        public ActionResult ByManufacturer(FilterViewModel filter, string name, OrderByType orderBy = 0, OrderType orderType = 0, int page = 0)
         {
             var productsToFilter = this.Data.Products.All().Where(x => x.Manufacturer.Name == name);
             var filterResult = this.ApplyFiltering(productsToFilter, filter);
@@ -373,7 +383,7 @@
         }
 
         [HttpPost]
-        public ActionResult Filter(FilterViewModel filter, string subcategory, string category, string subcategoryOption, OrderByType orderBy, OrderType orderType, int page = 0)
+        public ActionResult Filter(FilterViewModel filter, string subcategory, string category, string subcategoryOption, OrderByType orderBy = 0, OrderType orderType = 0, int page = 0)
         {
             var productsToFilter = string.IsNullOrEmpty(subcategoryOption)
                                        ? this.GetProductsInSubcategory(subcategory, category)
@@ -401,9 +411,9 @@
                 if (searchTermDb == null)
                 {
                     searchTermDb = new SearchTerm
-                                       {
-                                           Term = searchTerm
-                                       };
+                    {
+                        Term = searchTerm
+                    };
 
                     this.Data.SearchTerms.Add(searchTermDb);
                 }
