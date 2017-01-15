@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "Orders administration";
+}
+
+@* ReSharper disable ConvertToLambdaExpression *@
+@using CampBg.Web.Areas.Administration.ViewModels
+@{
+    ViewBag.Title = "Orders";
+}
+
+@(Html.Kendo()
+        .Grid<OrderViewModel>()
+        .Name("OrdersGrid")
+        .Columns(col =>
+            {
+                col.Bound(x => x.Id);
+                col.Bound(x => x.UserId)
+                    .ClientTemplate("#=ByUser#")
+                    .ClientGroupFooterTemplate("Orders count: #=count#");
+                col.Bound(x => x.PhoneNumber);
+                col.Bound(x => x.EmailAddress);
+                col.Bound(x => x.OrderDate).Format("{0:H:mm, d/M/yyyy}");
+                col.Bound(x => x.IsPaid);
+                col.Bound(x => x.IsFinalized);
+                col.Bound(x => x.PaymentMethod);
+                col.Bound(x => x.Total)
+                    .ClientFooterTemplate("Total: #=sum#")
+                    .ClientGroupFooterTemplate("User total: #=sum#");
+                col.Command(x =>
+                    {
+                        x.Edit();
+                        x.Destroy();
+                    });
+            })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Create();
+            toolbar.Custom()
+                .Action("Index", "Home")
+                .Text("Back to administration");
+        })
+        .Editable(edit =>
+        {
+            edit.Mode(GridEditMode.PopUp);
+        })
+        .Filterable(filter =>
+            {
+                filter.Enabled(true);
+            })
+        .Sortable(sort =>
+            {
+                sort.Enabled(true);
+            })
+        .Pageable(page =>
+            {
+                page.Refresh(true);
+            })
+        .DataSource(data =>
+        {
+            data.Ajax()
+                .Sort(x => x.Add(z => z.Id).Descending())
+                .Aggregates(x =>
+                    {
+                        x.Add(ord => ord.UserId).Count();
+                        x.Add(ord => ord.Total).Sum();
+                    })
+                .PageSize(15)
+                .Model(x => x.Id(model => model.Id))
+                .Read("GetOrders", "Orders")
+                .Create("CreateOrder", "Orders")
+                .Destroy("DeleteOrder", "Orders")
+                .Update("UpdateOrder", "Orders");
+        })
+        .Groupable(x => x.Enabled(true))
+        .ClientDetailTemplateId("ordersDetail"))
+
+<script type="text/kendo-templ" id="ordersDetail">
+    <h4>Address: </h4>
+    <p>
+        <div>City: #=City# , Postal code: #=PostalCode#</div>
+        <div>Address: #=Address#</div>
+    </p>
+    Additional order details: #=AdditionalDetails#
+    
+    <h4>Фактура:</h4>
+    <p>
+        <div>Фирма: #=CompanyName# , Адрес: #=CompanyAddress#</div>
+        <div>МОЛ: #=Custodian#</div>
+        <div>ЕИК: #=EIK#</div>
+        <div>ДДС: #=VATNumber#</div>
+    </p>
+
+    @(Html.Kendo()
+          .Grid<OrderItemViewModel>()
+          .Name("OrderItems_#=Id#")
+          .Columns(col =>
+              {
+                  col.Bound(x => x.ItemName);
+                  col.Bound(x => x.Price);
+                  col.Bound(x => x.Quantity);
+                  col.Command(x =>
+                      {
+                          x.Edit();
+                          x.Destroy();
+                      });
+              })
+          .DataSource(data =>
+              {
+                  data.Ajax()
+                      .Model(x => x.Id(model => model.ItemId))
+                      .Read("ReadItems", "Orders", new { id = "#=Id#" })
+                      .Update("UpdateItems", "Orders")
+                      .Destroy("DeleteItems", "Orders");
+              })
+          .Editable(edit =>
+              {
+                  edit.Mode(GridEditMode.PopUp);
+              })
+          .Pageable(p => p.Refresh(true))
+          .HtmlAttributes(new { @class = "margin-top-small" })
+          .ClientDetailTemplateId("orderItemsDetail")
+          .ToClientTemplate())
+
+
+
+</script>
+
+<script type="text/kendo-templ" id="orderItemsDetail">
+    @(Html.Kendo()
+          .Grid<OrderItemPropertyViewModel>()
+          .Name("OrderItemPropertyValues_#=Id#")
+          .Columns(col =>
+              {
+                  col.Bound(x => x.Property);
+                  col.Bound(x => x.PropertyValue);
+                  //col.Command(x =>
+                  //    {
+                  //        x.Edit();
+                  //    });
+              })
+          .DataSource(data =>
+              {
+                  data.Ajax().Model(x => x.Id(model => model.Id))
+                      .Read("ReadItemProperties", "Orders", new { id = "#=Id#" });
+                  //.Update("UpdateItems", "Orders")
+              })
+          .Editable(edit =>
+              {
+                  edit.Mode(GridEditMode.PopUp);
+              })
+          .Pageable(p => p.Refresh(true))
+          .HtmlAttributes(new { @class = "margin-top-small" })
+          .ToClientTemplate())
+
+</script>
+@* ReSharper restore ConvertToLambdaExpression *@

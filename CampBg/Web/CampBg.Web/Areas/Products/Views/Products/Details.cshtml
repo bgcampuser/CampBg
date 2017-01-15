@@ -1,0 +1,143 @@
+﻿@using CampBg.Web.ViewModels
+@model CampBg.Web.Areas.Products.ViewModels.ProductDetailsViewModel
+
+@using Resource = CampBg.Web.Localization.Views;
+
+@{
+    ViewBag.Title = Model.Name;
+    var initialBreadcrumb = string.Format("{0} - {1}", Model.Category, Model.Subcategory);
+}
+
+<div class="row">
+    <ol class="col-lg-12 breadcrumb margin-top-small">
+        <li>@Html.ActionLink(Resource.Home, "Index", new { area = string.Empty, controller = "Home" })</li>
+        <li>
+            @Html.ActionLink(initialBreadcrumb, "BySubcategory",
+            new
+            {
+                area = "Products",
+                controller = "Products",
+                name = Model.Subcategory,
+                category = Model.Category
+
+            })
+        </li>
+        <li>
+            @Html.ActionLink(Model.SubcategoryOption, "BySubcategoryOption",
+        new
+        {
+            area = "Products",
+            controller = "Products",
+            subcategory = Model.Subcategory,
+            category = Model.Category,
+            subcategoryOption = Model.SubcategoryOption
+
+        })
+    </li>
+    <li class="active">@Model.Name</li>
+</ol>
+</div>
+<div class="row">
+    <div class="col-lg-3">
+        <h4>@Resource.Recently_viewed</h4>
+        @Html.Partial("RecentlyViewed", (IEnumerable<ProductListViewModel>)this.ViewBag.LastViewed)
+    </div>
+    <div class="col-lg-9">
+        <div class="row">
+            <div class="col-lg-5">
+                <img class="product-image" id="main-image" src="@Model.DefaultImageLocation" alt="default image for @Model.Name" />
+                <div class="thumbnails margin-top-small">
+                    @foreach (var thumb in Model.Images)
+                    {
+                        <img src="@thumb.Thumbnail" class="thumbnail" />
+                    }
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="h4">@Model.Name</div>
+                <div class="h5 margin-top-tiny">@Model.Manufacturer</div>
+                <div class="margin-top-small">@Html.Raw(Model.Description)</div>
+                <div class="margin-top-small">@Resource.Article_number: @Model.ArticleId</div>
+                @Html.DisplayFor(x => x.Properties)
+                <label class="margin-top-tiny">
+                    @Resource.Quantity:
+                    <input type="number" id="quantity" value="1" min="1" />
+                </label>
+                <div class="h4 margin-top-small">@Resource.Price: <span id="priceContainer">@Model.Price</span> @Resource.Currency.</div>
+                <button id="add-to-cart" class="product-button margin-top-small">@Resource.Add_to_cart</button>
+                @Html.ActionLink(Resource.Finalize_order, "Index", new { area = "Orders", controller = "Cart" }, new { @class = "product-button margin-top-small" })
+            </div>
+        </div>
+    </div>
+</div>
+<p></p>
+<h4 class="margin-top-big">@Resource.Related_products</h4>
+<div class="row">
+    @Html.DisplayFor(x => x.RelatedProducts, new { @class = "col-lg-3" })
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        (function () {
+            var cartTotalContainer = $('#cartTotal');
+            var cartProductsCountContainer = $('#cartProductsCount');
+            var priceContainer = $('#priceContainer');
+
+            $('#add-to-cart').on('click', function () {
+                var properties, order;
+
+                properties = $('.product-details-property');
+                order = {
+                    ProductId: '@Model.Id',
+                    SelectedProperties: [],
+                    Quantity: 0
+                };
+
+                properties.each(function (i, el) {
+                    var property, element;
+                    element = $(el);
+                    property = {
+                        PropertyId: parseInt(element.data('property-id')),
+                        PropertyValueId: parseInt(element.find('option:selected').val())
+                    };
+
+                    console.log(property);
+                    order.SelectedProperties.push(property);
+                });
+
+                order.Quantity = parseInt($('#quantity').val());
+
+                // add item to cart
+                $.ajax({
+                    url: "/Orders/Cart/AddToCart/",
+                    type: "POST",
+                    data: JSON.stringify(order),
+                    contentType: "application/json",
+                    success: function (res) {
+                        var totalQuantity = parseInt(cartProductsCountContainer.text());
+                        var priceIncrement = parseFloat(priceContainer.text());
+                        var priceTotal = parseFloat(cartTotalContainer.text());
+                        priceTotal += priceIncrement * order.Quantity;
+                        cartTotalContainer.text(priceTotal.toFixed(2, 10));
+                        totalQuantity += order.Quantity;
+                        cartProductsCountContainer.text(totalQuantity);
+
+                        noty({ text: "@Resource.Added_to_cart" });
+                    }
+                });
+            });
+        })();
+
+        $('.thumbnails').on('click', '.thumbnail', function () {
+            var thumbLocation = $(this).attr('src');
+            var imageLocation = thumbLocation.replace('thumb_', '');
+            $('#main-image').attr('src', imageLocation);
+        })
+    </script>
+}
+
+<style>
+    #quantity {
+        width: 70px;
+    }
+</style>

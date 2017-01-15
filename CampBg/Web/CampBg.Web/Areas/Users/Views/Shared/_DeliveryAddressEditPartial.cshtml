@@ -1,0 +1,9 @@
+﻿@model CampBg.Web.Areas.Users.ViewModels.DeliveryAddressViewModel
+
+@using (Html.BeginForm("Add", "DeliveryAdresses", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.EditorForModel()
+    <br/>
+    <input type="submit" value="Save" class="btn btn-default" />
+}

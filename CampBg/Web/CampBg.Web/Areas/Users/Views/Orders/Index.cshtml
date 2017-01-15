@@ -1,0 +1,49 @@
+﻿@model IEnumerable<CampBg.Web.Areas.Users.ViewModels.OrderViewModel>
+
+@using Resource = CampBg.Web.Localization.Views;
+
+
+@{
+    ViewBag.Title = Resource.Order_history;
+}
+
+<div class="row">
+    <ol class="col-lg-12 breadcrumb margin-top-small">
+        <li>@Html.ActionLink(Resource.Home, "Index", new { area = string.Empty, controller = "Home" })</li>
+        <li>@Html.ActionLink(Resource.Profile, "Index", new { area = "Users", controller = "Profile" })</li>
+        <li class="active">@Resource.Order_history</li>
+    </ol>
+</div>
+
+@foreach (var order in Model)
+{
+    <h4>@Resource.Order_id: @order.Id</h4>
+    <table class="table table-bordered table-striped margin-top-small">
+
+        @foreach (var item in order.OrderItems)
+        {
+            <tr>
+                <td>
+                    <div>
+                        @item.Name
+                    </div>
+                    @foreach (var pv in item.PropertyValues)
+                    {
+                        <div>
+                            @pv.Property - @pv.Value
+                        </div>
+                    }
+                <td>
+                    @Resource.Quantity: @item.Quantity
+                </td>
+                <td>
+                    @Resource.Price: @item.Price @Resource.Currency.
+                </td>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <h4>@Resource.Total: @order.Total</h4>
+    <hr/>
+}

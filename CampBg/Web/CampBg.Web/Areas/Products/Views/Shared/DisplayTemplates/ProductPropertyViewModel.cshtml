@@ -1,0 +1,13 @@
+﻿@model CampBg.Web.Areas.Products.ViewModels.ProductPropertyViewModel
+
+<div class="margin-top-small">
+    <label for="prop_@Model.PropertyId" class="product-details-property" data-property-id="@Model.PropertyId">
+        @Model.Name:
+        <select id="prop_@Model.PropertyId">
+            @foreach (var propertyVal in Model.Values)
+            {
+                <option value="@propertyVal.Id">@propertyVal.Value</option>
+            }
+        </select>
+    </label>
+</div>

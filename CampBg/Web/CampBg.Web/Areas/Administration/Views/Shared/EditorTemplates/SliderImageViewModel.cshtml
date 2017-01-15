@@ -1,0 +1,28 @@
+﻿@model CampBg.Web.Areas.Administration.ViewModels.SliderImageViewModel
+
+<div class="form-group">
+    @Html.HiddenFor(x => x.Id)
+    <div class="editor-label">
+        @Html.LabelFor(x => x.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Name)
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+    
+    <div class="editor-label">
+        @Html.LabelFor(x => x.Url)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Url)
+        @Html.ValidationMessageFor(x => x.Url)
+    </div>
+   
+    <div class="editor-label">
+        @Html.LabelFor(x => x.IsActive)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.IsActive)
+        @Html.ValidationMessageFor(x => x.IsActive)
+    </div>
+</div>

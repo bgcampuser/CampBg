@@ -1,0 +1,113 @@
+﻿@model CampBg.Web.ViewModels.IndexPageViewModel
+
+@using Resource = CampBg.Web.Localization.Views;
+
+@{
+    ViewBag.Title = "Camp.bg";
+}
+
+@section scripts {
+    <script src="http://cdn.strategiqcommerce.com/ajax/libs/ResponsiveSlides.js/1.53/responsiveslides.min.js"></script>
+    <script>
+        $(".rslides").responsiveSlides();
+        var newProducts = $('#new-products-container');
+        var baseUrl = '/Home';
+        var newProductsUrl = baseUrl + '/GetLatestProducts/';
+        var popularProducts = $('#popular-products-container');
+        var popularProductsUrl = baseUrl + '/GetPopularProducts/';
+
+        $.get(popularProductsUrl, null, function (data) {
+            popularProducts.html(data);
+        });
+
+        $.get(newProductsUrl, null, function (data) {
+            newProducts.html(data);
+        });
+
+        popularProducts.on('click', '.page-index', function (ev) {
+            ev.preventDefault();
+
+            var page = +(ev.target.text) - 1;
+            var popularProductsUrlPage = popularProductsUrl + '?page=' + page;
+            $.get(popularProductsUrlPage, null, function (data) {
+                popularProducts.html(data);
+            });
+        });
+        
+        newProducts.on('click', '.page-index', function (ev) {
+            ev.preventDefault();
+
+            var page = +(ev.target.text) - 1;
+            var newProductsUrlPage = newProductsUrl + '?page=' + page;
+            $.get(newProductsUrlPage, null, function (data) {
+                newProducts.html(data);
+            });
+        });
+    </script>
+}
+
+<style>
+    .rslides {
+        position: relative;
+        list-style: none;
+        overflow: hidden;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+        .rslides li {
+            -webkit-backface-visibility: hidden;
+            position: absolute;
+            display: none;
+            width: 100%;
+            left: 0;
+            top: 0;
+        }
+
+            .rslides li:first-child {
+                position: relative;
+                display: block;
+                float: left;
+            }
+
+        .rslides img {
+            display: block;
+            height: auto;
+            float: left;
+            width: 100%;
+            border: 0;
+        }
+</style>
+
+<div class="row">
+    <div class="col-md-12 margin-top-small">
+        <ul class="rslides">
+            @foreach (var image in Model.SliderImages)
+            {
+                <li><a href="@image.Url"><img src="@image.Location" alt=""></a></li>
+            }
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 margin-top-small">
+        <div class="product-group-label text-white">
+            <span class="margin-left-small">@Resource.New_products</span>
+        </div>
+    </div>
+</div>
+<div class="row text-center" id="new-products-container">
+
+</div>
+
+<div class="row">
+    <div class="col-lg-12 margin-top-small">
+        <div class="product-group-label text-white">
+            <span class="margin-left-small">@Resource.Popular_products</span>
+        </div>
+    </div>
+</div>
+<div class="row text-center" id="popular-products-container">
+</div>

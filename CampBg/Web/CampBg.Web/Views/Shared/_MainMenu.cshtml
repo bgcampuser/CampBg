@@ -1,0 +1,76 @@
+﻿@using CampBg.Web.ViewModels
+
+<div class="main-menu-mini-container">
+    <ul class="main-menu">
+        <li class="main-menu-button">
+            <a href="/" class="root-menu-category"><img src="/Content/Images/home.png" /></a>
+        </li>
+
+        @foreach (CategoryViewModel category in ViewBag.MainMenu.Categories)
+        {
+            <li class="main-menu-button">
+                <a href="#" class="root-menu-category">@category.Name</a>
+                <div class="dropdown-menu main-dropdown-menu dropdown-menu-container">
+                    <div class="menu-column" style="display: inline">
+                        @{int counter = 0;}
+
+                        @foreach (SubcategoryViewModel subcategory in category.Subcategories)
+                        {
+                            if (counter % 4 == 0 && counter != 0)
+                            {
+                                @:</div><div class="menu-column">
+                            }
+                            <div class="submenu-title">
+                                <div class="menu-subcategory">
+                                    <a href="@Url.Action("BySubcategory",
+                                                 new
+                                                     {
+                                                         controller = "Products",
+                                                         area = "Products",
+                                                         category = category.Name,
+                                                         name = subcategory.Name
+                                                     })">
+                                        @subcategory.Name
+                                    </a>
+                                </div>
+                                <div class="submenu">
+                                    @foreach (SubcategoryOptionViewModel property in subcategory.SubcategoryOptions)
+                                    {
+                                        <div class="submenu-item">
+                                            <a href="@Url.Action("BySubcategoryOption", new
+                                                                                            {
+                                                                                                controller = "Products",
+                                                                                                area = "Products",
+                                                                                                category = category.Name,
+                                                                                                subcategory = subcategory.Name,
+                                                                                                subcategoryOption = property.Name
+                                                                                            })">
+                                                @property.Name
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="separator"></div>
+                                    counter++;
+                        }
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+
+<script>
+    $(window).ready(function () {
+        $('.main-menu-mini-container').on('mouseover','.main-menu-button', function (ev) {
+            ev.preventDefault();
+            $(this).find('.dropdown-menu').show();
+        });
+
+        $('.main-menu-mini-container').on('mouseout', '.main-menu-button', function (ev) {
+            ev.preventDefault();
+            $(this).find('.dropdown-menu').hide();
+        });
+    });
+</script>

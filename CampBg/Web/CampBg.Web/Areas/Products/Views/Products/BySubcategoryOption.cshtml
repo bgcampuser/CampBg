@@ -1,0 +1,31 @@
+﻿@model CampBg.Web.Areas.Products.ViewModels.FilterPageViewModel
+
+@using Resource = CampBg.Web.Localization.Views;
+
+@{
+    var linkLocation = string.Format(Resource.Products_in_subcat, (string)ViewBag.Category, (string)ViewBag.Subcategory);
+    ViewBag.Title = string.Format(Resource.Products_in_sub_option, ViewBag.Category, ViewBag.Subcategory, ViewBag.SubcategoryOption);
+}
+
+<div class="row">
+    <ol class="col-lg-12 breadcrumb margin-top-small">
+        <li>@Html.ActionLink(Resource.Home, "Index", new { area = string.Empty, controller = "Home" })</li>
+        <li>
+            @Html.ActionLink(linkLocation, "BySubcategory",
+            new { area = "Products", controller = "Products", name = ViewBag.Subcategory, category = ViewBag.Category })
+        </li>
+        <li class="active">@((string)ViewBag.SubcategoryOption)</li>
+    </ol>
+</div>
+
+<div class="row">
+    @Html.Partial("Filters", Model.Filters)
+
+    <div class="col-lg-9">
+        <div class="row">
+            <div id="filter-results">
+                @Html.Partial("FilterResultsPartial", Model.InitialProducts)
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+﻿@model IEnumerable<CampBg.Web.ViewModels.ProductListViewModel>
+@using Resource = CampBg.Web.Localization.Views
+
+@{
+    string className;
+    if (!string.IsNullOrEmpty((string)ViewData["class"]))
+    {
+        className = (string)ViewData["class"];
+    }
+    else
+    {
+        className = "col-lg-4";
+    }
+
+    string productClass;
+    if (!string.IsNullOrEmpty((string)ViewData["productContainerClass"]))
+    {
+        productClass = (string)ViewData["productContainerClass"];
+    }
+    else
+    {
+        productClass = "product-container home-page-item";
+    }
+}
+
+@foreach (var item in Model)
+{
+    <div class="@className">
+        <div class="@productClass">
+            <a href="@Url.Action("Details", new { controller = "Products", id = item.Id, name = item.Name, area = "Products" })">
+                <img src="@item.Image.Location" class="product-image" alt="@item.Name image" />
+                <div class="bottom">
+                    <div class="ellipsis">@item.Name</div>
+                    <div>@item.Price @Resource.Currency</div>
+                </div>
+            </a>
+        </div>
+    </div>
+}

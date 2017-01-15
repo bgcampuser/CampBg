@@ -1,0 +1,8 @@
+﻿@model string
+
+<input type="text" name="Contents" class="newsletterEditor" value="@Model">
+
+<script src="/Scripts/TinyMCE/tinymce.min.js"></script>
+<script>
+    tinymce.init({ selector: 'input.newsletterEditor' });
+</script>

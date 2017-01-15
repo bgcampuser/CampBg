@@ -1,0 +1,21 @@
+﻿@model CampBg.Web.Areas.Users.Controllers.ProfileSettingsViewModel
+     
+@using Resource = CampBg.Web.Localization.Views;
+
+@{
+    ViewBag.Title = Resource.Settings;
+}
+      
+<div class="row">
+    <ol class="col-lg-12 breadcrumb margin-top-small">
+        <li>@Html.ActionLink(Resource.Home, "Index", new { area = string.Empty, controller = "Home" })</li>
+        <li>@Html.ActionLink(Resource.Profile, "Index", new { area = "Users", controller = "Profile" })</li>
+        <li class="active">@Resource.Settings</li>
+    </ol>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.EditorForModel()
+    <input type="submit" value="@Resource.Save"/>
+}

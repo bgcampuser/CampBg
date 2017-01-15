@@ -1,0 +1,7 @@
+﻿@model CampBg.Web.ViewModels.ShoppingCartMenuViewModel
+@using Microsoft.Ajax.Utilities
+@using Resource = CampBg.Web.Localization.Views;
+<a href="/Orders/Cart/" class="text-white">
+    <span class="glyphicon glyphicon-shopping-cart" style="font-size: 20px"></span>
+    <span style="font-size: 15px;">@Resource.Cart: <span id="cartTotal">@Model.Total</span> @Resource.Currency (<span id="cartProductsCount">@Model.ProductCount</span> @Resource.Products)</span>
+</a>

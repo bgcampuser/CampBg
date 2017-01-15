@@ -1,0 +1,41 @@
+﻿@using CampBg.Web.Areas.Administration.ViewModels
+
+    @{
+        ViewBag.Title = "Search term statistics";
+    }
+
+    <h2>@ViewBag.Title</h2>
+
+    @* ReSharper disable ConvertToLambdaExpression *@
+    @(Html.Kendo()
+        .Grid<SearchTermViewModel>()
+        .Name("SearchTerms")
+        .Columns(col =>
+        {
+            col.Bound(x => x.Term);
+            col.Bound(x => x.Count);
+        })
+        .Editable(edit =>
+            {
+                edit.Mode(GridEditMode.PopUp);
+            })
+        .Filterable(filter =>
+            {
+                filter.Enabled(true);
+            })
+        .Sortable(sort =>
+            {
+                sort.Enabled(true);
+            })
+        .Pageable(page =>
+            {
+                page.Refresh(true);
+            })
+        .DataSource(data =>
+        {
+            data.Ajax()
+                .Model(x => x.Id(m => m.Id))
+                .PageSize(15)
+                .Read("Read", "SearchTerms");
+        }))
+    @* ReSharper restore ConvertToLambdaExpression *@

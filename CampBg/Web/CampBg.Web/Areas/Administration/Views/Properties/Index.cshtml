@@ -1,0 +1,57 @@
+﻿@using CampBg.Web.Areas.Administration.ViewModels
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@* ReSharper disable ConvertToLambdaExpression *@
+@(Html.Kendo()
+        .Grid<PropertyViewModel>()
+        .Name("CategoriesGrid")
+        .Columns(col =>
+            {
+                col.Bound(x => x.Id);
+                col.Bound(x => x.Name);
+                col.Bound(x => x.NameEn);
+                col.Command(x =>
+                    {
+                        x.Edit();
+                        x.Destroy();
+                    });
+            })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Create();
+            toolbar.Custom()
+                .Action("Index", "Home")
+                .Text("Back to administration");
+        })
+        .Editable(edit =>
+        {
+            edit.Mode(GridEditMode.PopUp);
+        })
+        .Filterable(filter =>
+            {
+                filter.Enabled(true);
+            })
+        .Sortable(sort =>
+            {
+                sort.Enabled(true);
+            })
+        .Pageable(page =>
+            {
+                page.Refresh(true);
+            })
+        .DataSource(data =>
+        {
+            data.Ajax()
+                .PageSize(15)
+                .Model(x => x.Id(model => model.Id))
+                .Read("Read", "Properties")
+                .Create("Create", "Properties")
+                .Destroy("Destroy", "Properties")
+                .Update("Update", "Properties");
+        }))
+@* ReSharper restore ConvertToLambdaExpression *@

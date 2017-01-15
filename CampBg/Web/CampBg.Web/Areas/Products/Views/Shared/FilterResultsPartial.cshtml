@@ -1,0 +1,89 @@
+﻿@model IEnumerable<CampBg.Web.ViewModels.ProductListViewModel>
+
+@using Resource = CampBg.Web.Localization.Views;
+
+@if (Model.Any())
+{
+    <div class="row">
+        <div class="col-lg-12">
+            @Html.DisplayFor(x => x)
+        </div>
+    </div>
+    <div class="row">
+        @for (int i = 0; i < (int)this.ViewBag.PageCount; i++)
+        {
+            <a href="#" class="pagination-index" data-page="@i">@(i + 1) </a>
+        }
+    </div>
+}
+else
+{
+    <div>@Resource.No_results</div>
+}
+
+<script type="text/javascript">
+    var filtersContainer = $('#filtersContainer');
+    var propertiesContainer = filtersContainer.find('#propertiesContainer');
+    var manufacturerContainer = filtersContainer.find('#manufacturerContainer');
+    var orderByContainer = $('#orderByDropdown');
+    var orderTypeContainer = $('#orderTypeDropdown');
+
+    function sendData(ev) {
+        ev.preventDefault();
+        if (ev.stopPropagation) {
+            ev.stopPropagation();
+        }
+        var priceRange = $('#priceRange').getKendoRangeSlider();
+
+        var filterObject = {
+            SelectedProperties: [],
+            Manufacturers: [],
+            PriceFilter: {
+                MinPrice: priceRange.options.selectionStart,
+                MaxPrice: priceRange.options.selectionEnd
+            }
+        };
+
+        var orderBy = orderByContainer.val();
+        var orderType = orderTypeContainer.val();
+
+
+        var selectedProperties = propertiesContainer.find(':checked');
+        selectedProperties.each(function (i, el) {
+            var element, property, id, value;
+            element = $(el);
+            property = element.data("property-id");
+            id = element.data("property-value-id");
+            value = element.data("value");
+
+            filterObject.SelectedProperties.push({
+                Id: id,
+                Value: value,
+                PropertyId: property
+            });
+        });
+
+        var selectedManufacturers = manufacturerContainer.find(":checked");
+        selectedManufacturers.each(function (i, el) {
+            var element = $(el);
+            filterObject.Manufacturers.push(element.data("manufacturer-id"));
+        });
+
+        var page = $(ev.target).data('page');
+
+        var url = window.location.href + '/Filter';
+        url = url + '?orderType=' + orderType + '&orderBy=' + orderBy + '&page=' + page;
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: JSON.stringify(filterObject),
+            contentType: "application/json",
+            success: function (res) {
+                $('#filter-results').html(res);
+            }
+        });
+    };
+
+    $('.pagination-index').on('click', sendData);
+</script>

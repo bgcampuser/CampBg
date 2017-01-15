@@ -1,0 +1,28 @@
+﻿@model CampBg.Web.Areas.Administration.ViewModels.NewsletterViewModel
+
+<div class="form-group">
+    @Html.HiddenFor(x => x.Id)
+    <div class="editor-label">
+        @Html.LabelFor(x => x.Title)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Title)
+        @Html.ValidationMessageFor(x => x.Title)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(x => x.Contents)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Contents)
+        @Html.ValidationMessageFor(x => x.Contents)
+    </div>
+    
+    <div class="editor-label">
+        @Html.LabelFor(x => x.AlreadySent)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.AlreadySent)
+        @Html.ValidationMessageFor(x => x.AlreadySent)
+    </div>
+</div>

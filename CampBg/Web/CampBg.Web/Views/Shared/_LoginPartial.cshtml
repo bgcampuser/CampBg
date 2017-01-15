@@ -1,0 +1,35 @@
+﻿@using Resource = CampBg.Web.Localization.Views;
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", new { area = string.Empty }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("returnUrl", this.Request.RawUrl)
+        <div class="pull-right main-menu-header">
+            <div class="margin-right-small inline">
+                <span class="glyphicon glyphicon-user"></span> @Resource.Hello @User.Identity.Name
+            </div>
+            <div class="margin-right-small inline">
+                <a href="@Url.Action("Index", "Profile", new {area="Users"})" class="text-white">
+                    <span class="glyphicon glyphicon-cog"></span>
+                    @Resource.Profile
+                </a>
+            </div>
+            <div class="margin-right-small inline">
+                <a href="javascript:document.getElementById('logoutForm').submit()" class="text-white">
+                    <span class="glyphicon glyphicon-remove"></span> @Resource.Logout
+                </a>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <span>
+        <a href="/Account/Login?ReturnUrl=@Request.RawUrl" class="text-white margin-right-small">@Resource.Login <span class="glyphicon glyphicon-user"></span></a>
+    </span>
+    <span>
+        <a href="/Account/Register?ReturnUrl=/Account/RegistrationSuccessfull" class="text-white">@Resource.Simple_register <span class="glyphicon glyphicon-cog"></span></a>
+    </span>
+}

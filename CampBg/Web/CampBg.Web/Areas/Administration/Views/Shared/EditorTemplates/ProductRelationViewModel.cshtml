@@ -1,0 +1,22 @@
+﻿@using CampBg.Web.Areas.Administration.ViewModels
+
+@model ProductRelationViewModel
+
+<div class="form-group">
+    <div class="editor-label">
+        @Html.LabelFor(x => x.RelationId)
+    </div>
+    <div class="editor-field">
+        @(Html.Kendo()
+              .ComboBox()
+              .Name("RelationId")
+              .DataValueField("RelationId")
+              .DataTextField("Name")
+              .Filter(FilterType.Contains)
+              .DataSource(x => x.Read("ReadRelatedProducts", "Products"))
+              .HtmlAttributes(new { @class = "width75percent" }))
+        <div>
+            @Html.ValidationMessageFor(x => x.RelationId)
+        </div>
+    </div>
+</div>

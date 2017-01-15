@@ -1,0 +1,74 @@
+﻿@using CampBg.Web.Areas.Administration.ViewModels
+
+@{
+    ViewBag.Title = "Slider images administration";
+}
+
+@* ReSharper disable ConvertToLambdaExpression *@
+@(Html.Kendo()
+        .Grid<SliderImageViewModel>()
+        .Name("CategoriesGrid")
+        .Columns(col =>
+        {
+            col.Bound(x => x.Id);
+            col.Bound(x => x.Name);
+            col.Bound(x => x.Url).ClientTemplate("<a class='text-white' href='#=Url#' target='_blank'>#=Url#</a>");
+            col.Bound(x => x.IsActive);
+            col.Command(x =>
+            {
+                x.Edit();
+                x.Destroy();
+            });
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Create();
+            toolbar.Custom()
+                .Action("Index", "Home")
+                .Text("Back to administration");
+        })
+        .Editable(edit =>
+            {
+                edit.Mode(GridEditMode.PopUp);
+            })
+        .Filterable(filter =>
+            {
+                filter.Enabled(true);
+            })
+        .Sortable(sort =>
+            {
+                sort.Enabled(true);
+            })
+        .Pageable(page =>
+            {
+                page.Refresh(true);
+            })
+        .DataSource(data =>
+        {
+            data.Ajax()
+                .PageSize(15)
+                .Model(x => x.Id(model => model.Id))
+                .Read("GetImages", "SliderImages")
+                .Create("CreateImage", "SliderImages")
+                .Destroy("DeleteImage", "SliderImages")
+                .Update("UpdateImage", "SliderImages");
+        })
+        .ClientDetailTemplateId("sliderImageDetails")
+)
+@* ReSharper restore ConvertToLambdaExpression *@
+
+<script type="text/kendo-templ" id="sliderImageDetails">
+    @(Html.Kendo()
+            .Upload()
+            .Name("ImageUpload_#=Id#")
+            .HtmlAttributes(new { name = "image" })
+            .Multiple(false)
+            .Async(x =>
+            {
+                x.Save("SaveImage", "SliderImages", new { id = "#:Id#" });
+                x.AutoUpload(false);
+            })
+          .ToClientTemplate())
+
+    <img src="#:Location#" alt="#:Name#" style="width: 100%" />
+</script>

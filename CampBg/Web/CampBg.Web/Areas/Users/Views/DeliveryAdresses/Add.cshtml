@@ -1,0 +1,16 @@
+﻿@model CampBg.Web.Areas.Users.ViewModels.DeliveryAddressViewModel
+@using Resource = CampBg.Web.Localization.Views;
+@{
+    ViewBag.Title = Resource.Add_delivery_address;
+}
+
+<div class="row">
+    <ol class="col-lg-12 breadcrumb margin-top-small">
+        <li>@Html.ActionLink(Resource.Home, "Index", new { area = string.Empty, controller = "Home" })</li>
+        <li>@Html.ActionLink(Resource.Profile, "Index", new { area = "Users", controller = "Profile" })</li>
+        <li>@Html.ActionLink(Resource.Delivery_address, "Index", new { area = "Users", controller = "DeliveryAdresses" })</li>
+        <li class="active">@Resource.Add</li>
+    </ol>
+</div>
+
+@Html.Partial("_DeliveryAddressEditPartial")

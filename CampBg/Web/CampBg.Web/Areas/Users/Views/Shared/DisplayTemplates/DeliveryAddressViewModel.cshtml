@@ -1,0 +1,20 @@
+﻿@model CampBg.Web.Areas.Users.ViewModels.DeliveryAddressViewModel
+
+@using Resource = CampBg.Web.Localization.Views
+
+<tr>
+    <td>
+        @Html.DisplayNameFor(x => x.City): @Html.DisplayFor(x => x.City)
+        <br />
+        @Html.DisplayNameFor(x => x.PostalCode): @Html.DisplayFor(x => x.PostalCode)
+    </td>
+    <td>
+        @Html.DisplayNameFor(x => x.Address): @Html.DisplayFor(x => x.Address)
+    </td>
+
+    <td>
+        @Html.ActionLink(Resource.Edit, "Edit", new { controller = "DeliveryAdresses", id = Model.Id }, new { @class = "btn btn-default" })
+
+        @Html.ActionLink(Resource.Remove, "Remove", new { controller = "DeliveryAdresses", id = Model.Id }, new { @class = "btn btn-default" })
+    </td>
+</tr>

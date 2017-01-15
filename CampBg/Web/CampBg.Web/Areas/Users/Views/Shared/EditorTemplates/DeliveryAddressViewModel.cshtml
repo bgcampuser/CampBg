@@ -1,0 +1,16 @@
+﻿@model CampBg.Web.Areas.Users.ViewModels.DeliveryAddressViewModel
+
+@Html.HiddenFor(x => x.Id)
+<div>
+    @Html.LabelFor(x=>x.City)
+    @Html.EditorFor(x => x.City)
+</div>
+<div>
+
+    @Html.LabelFor(x => x.PostalCode)
+    @Html.EditorFor(x => x.PostalCode)
+</div>
+    <div>
+    @Html.LabelFor(x => x.Address)
+    @Html.EditorFor(x => x.Address)
+</div>

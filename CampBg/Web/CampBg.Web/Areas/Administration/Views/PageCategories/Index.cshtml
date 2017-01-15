@@ -1,0 +1,50 @@
+﻿@using CampBg.Web.Areas.Administration.ViewModels
+
+<div>
+    @(Html.Kendo().Grid<StaticPageCategoryViewModel>()
+          .Name("StaticPageCategories")
+          .DataSource(data => data.Ajax().Read(r => r.Action("Read", "PageCategories")))
+          .Pageable(page => page.Refresh(true))
+          .ClientDetailTemplateId("StaticPagesId")
+    )
+</div>
+
+<script id="StaticPagesId" type="text/x-kendo-template">
+    
+    @(Html.Kendo().Grid<StaticPageViewModel>()
+          .Name("StaticPage_#=Id#")
+          .ToolBar(tool => tool.Create())
+          .DataSource(data => 
+              data.Ajax()
+                    .Model(m => m.Id(model => model.Id))
+                    .Read(read => read.Action("Read", "Pages", new { id = "#=Id#" }))
+                    .Update(update => update.Action("Update", "Pages"))
+                    .Create(create => create.Action("Create", "Pages", new { categoryId = "#=Id#" }))
+                    .Destroy(destroy => destroy.Action("Delete", "Pages"))
+          )
+          .Columns(x =>
+              {
+                  x.Bound(m => m.TitleBg);
+                  x.Bound(m => m.TitleEn);
+                  x.Command(c =>
+                      {
+                          c.Edit();
+                          c.Destroy();
+                      });
+              })
+          .Editable(edit => edit.Mode(GridEditMode.PopUp))
+          .ClientDetailTemplateId("newsletter-detail-template")
+          .ToClientTemplate())
+</script>
+
+<script type="text/kendo-templ" id="newsletter-detail-template">
+    <p>Заглавие: #=TitleBg#</p>
+    <p>
+        #=ContentBg#
+    </p>
+
+    <p>Title: #=TitleEn#</p>
+    <p>
+        #=ContentEn#
+    </p>
+</script>

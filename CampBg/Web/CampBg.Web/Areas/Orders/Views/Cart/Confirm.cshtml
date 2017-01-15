@@ -1,0 +1,253 @@
+﻿@using CampBg.Extensions
+@model CampBg.Web.Areas.Orders.ViewModels.OrderConfirmationViewModel
+@using Resource = CampBg.Web.Localization.Views;
+@{
+    ViewBag.Title = Resource.Confirm_order;
+}
+<div class="row">
+    <ol class="col-lg-12 breadcrumb margin-top-small">
+        <li>@Html.ActionLink(Resource.Home, "Index", new { area = string.Empty, controller = "Home" })</li>
+        <li>@Html.ActionLink(Resource.Shopping_cart, "Index", new { area = "Orders", controller = "Cart" })</li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</div>
+
+<div class="row">
+    @if (Model.Cart.Items.Any())
+    {
+        @Html.Partial("CartPartial", Model.Cart)
+        <div class="col-lg-6 col-lg-offset-4 text-center">
+            @using (Html.BeginForm("Place", "Cart", new { area = "Orders" }, FormMethod.Post))
+            {
+                <div>
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                        foreach (var addr in Model.Addresses)
+                        {
+                            <p>
+                                @Html.RadioButton("AddressId", addr.Id, new { id = "radio_" + addr.Id })
+                                <label for="radio_@addr.Id" class="addressRadio">
+                                    @Resource.City: @addr.City <br />
+                                    @Resource.Address: @addr.Address <br />
+                                    @Resource.Postal_code: @addr.PostalCode
+                                </label>
+                            </p>
+                        }
+
+
+                        <label for="newAddressInput" name="AddressId" id="newAddressLabel">
+                            <span class="h4">@Resource.New_address</span>
+                        </label>
+                    }
+
+                    <div id="newAddressContainer">
+                        <br />
+                        <div style="width: 400px">
+                            @if (!this.User.Identity.IsAuthenticated)
+                            {
+                                <div class="field">
+                                    <div class="editor-label">
+                                        @Html.LabelFor(x => x.Name)
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.EditorFor(x => x.Name)
+                                        @Html.ValidationMessageFor(x => x.Name)
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="field">
+                                <div class="editor-label">
+                                    @Html.LabelFor(x => x.City)
+                                </div>
+
+                                <div class="editor-field">
+                                    @Html.EditorFor(x => x.City)
+                                    @Html.ValidationMessageFor(x => x.City)
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="editor-label">
+                                    @Html.LabelFor(x => x.PostalCode)
+                                </div>
+
+                                <div class="editor-field">
+                                    @Html.EditorFor(x => x.PostalCode)
+                                    @Html.ValidationMessageFor(x => x.PostalCode)
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="editor-label">
+                                    @Html.LabelFor(x => x.PhoneNumber)
+                                </div>
+
+                                <div class="editor-field">
+                                    @Html.EditorFor(x => x.PhoneNumber)
+                                    @Html.ValidationMessageFor(x => x.PhoneNumber)
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="editor-label">
+                                    @Html.LabelFor(x => x.EmailAddress)
+                                </div>
+
+                                <div class="editor-field">
+                                    @Html.EditorFor(x => x.EmailAddress)
+                                    @Html.ValidationMessageFor(x => x.EmailAddress)
+                                </div>
+                            </div>
+                            
+                            <p>
+                                <div class="editor-label text-left">
+                                    @Html.LabelFor(x => x.Address)
+                                </div>
+
+                                <div class="editor-field text-right">
+                                    @Html.EditorFor(x => x.Address)
+                                    @Html.ValidationMessageFor(x => x.Address)
+                                </div>
+                            </p>
+
+                            <p>
+                                <div class="editor-label text-left">
+                                    @Html.LabelFor(x => x.AdditionalDetails)
+                                </div>
+
+                                <div class="editor-field text-right">
+                                    @Html.EditorFor(x => x.AdditionalDetails)
+                                    @Html.ValidationMessageFor(x => x.AdditionalDetails)
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="width: 300px;">
+                    <div class="field">
+                        <div class="editor-label">
+                            @Html.LabelFor(x => x.Receipt, Resource.Company_receipt)
+                        </div>
+
+                        <div class="editor-field">
+                            @Html.EditorFor(x => x.Receipt, new {id="Receipt"})
+                        </div>
+                    </div>
+                    
+                    <div id="receiptData" style="display: none">
+                        <div class="field">
+                            <div class="editor-label">
+                                @Html.LabelFor(x => x.CompanyName)
+                            </div>
+
+                            <div class="editor-field">
+                                @Html.EditorFor(x => x.CompanyName)
+                                @Html.ValidationMessageFor(x => x.CompanyName)
+                            </div>
+                        </div>
+                                
+                        <p>
+                            <div class="editor-label text-left">
+                                @Html.LabelFor(x => x.CompanyAddress)
+                            </div>
+
+                            <div class="editor-field text-right">
+                                @Html.EditorFor(x => x.CompanyAddress)
+                                @Html.ValidationMessageFor(x => x.CompanyAddress)
+                            </div>
+                        </p>
+                        <div class="field">
+                            <div class="editor-label">
+                                @Html.LabelFor(x => x.EIK)
+                            </div>
+
+                            <div class="editor-field">
+                                @Html.EditorFor(x => x.EIK)
+                                @Html.ValidationMessageFor(x => x.EIK)
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="editor-label">
+                                @Html.LabelFor(x => x.Custodian)
+                            </div>
+
+                            <div class="editor-field">
+                                @Html.EditorFor(x => x.Custodian)
+                                @Html.ValidationMessageFor(x => x.Custodian)
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="editor-label">
+                                @Html.LabelFor(x => x.VATNumber)
+                            </div>
+
+                            <div class="editor-field">
+                                @Html.EditorFor(x => x.VATNumber)
+                                @Html.ValidationMessageFor(x => x.VATNumber)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="editor-label text-left"><label>@Resource.Payment_method</label></div>
+                        <div class="editor-field">
+                            @Html.DropDownListFor(m => m.PaymentMethod, Model.PaymentMethod.ToSelectList())
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center margin-top-big">
+                    <input id="confirm-purchase-button" type="submit" value="@Resource.Confirm_order" />
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="col-lg-12">
+            @Resource.Shopping_cart_empty
+        </div>
+    }
+</div>
+
+
+@section Scripts {
+    <script>
+        var newAddressForm = $('#newAddressContainer');
+        var newAddressInput = $('#newAddressInput');
+        $('.addressRadio').on('click', function (ev) {
+            var isChecked = newAddressInput.prop('checked');
+            var selected = $(this);
+            if (isChecked && selected.is('#newAddressInput')) {
+                newAddressForm.show();
+            } else {
+                newAddressForm.hide();
+            }
+        });
+
+        var receiptCheckbox = $('#Receipt');
+        var receiptData = $('#receiptData');
+        receiptCheckbox.on('change', function (ev) {
+            receiptData.toggle();
+        });
+
+        var isLoggedIn = false;
+        
+        @if (this.User.Identity.IsAuthenticated)
+        {
+            <text>isLoggedIn = true;</text>
+        }
+        
+        if (isLoggedIn) {
+            newAddressForm.hide();
+            $('#newAddressLabel').on('click', function (ev) {
+                console.log(1);
+                ev.preventDefault();
+                newAddressForm.show();
+            });
+        }
+    </script>
+}

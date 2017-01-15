@@ -1,0 +1,132 @@
+﻿@using CampBg.Web.Areas.Products.ViewModels
+@using Kendo.Mvc.UI
+
+@model FilterContainerViewModel
+@using Resource = CampBg.Web.Localization.Views;
+
+<div class="col-lg-12 text-right">
+    @Resource.Order_by:
+    <select id="orderByDropdown">
+        <option selected value="0">@Resource.Name</option>
+        <option value="1">@Resource.Price</option>
+        <option value="2">@Resource.Date</option>
+    </select>
+
+    <select id="orderTypeDropdown">
+        <option selected value="0">@Resource.Ascending</option>
+        <option value="1">@Resource.Descending</option>
+    </select>
+</div>
+
+<div class="col-lg-3">
+    <div id="filtersContainer">
+        <div id="propertiesContainer">
+            @foreach (var property in Model.PropertyFilter)
+            {
+                <p>@property.Name</p>
+                foreach (var value in property.Values)
+                {
+                    <label>
+                        <input type="checkbox" value="@value.Id" class="filterOption"
+                               data-value="@value.Value" data-property-value-id="@value.Id" data-property-id="@property.PropertyId" />
+                        @value.Value
+                    </label>
+                    <br />
+                }
+            }
+        </div>
+
+        @if (Model.ManufacturerFilter != null && Model.ManufacturerFilter.Count() != 0)
+        {
+            <div id="manufacturerContainer">
+                <p>@Resource.Manufacturers:</p>
+                @foreach (ManufacturerViewModel manufacturer in Model.ManufacturerFilter)
+                {
+                    <label>
+                        <input type="checkbox" id="man_@manufacturer.Id" data-manufacturer-id="@manufacturer.Id" class="filterOption" />
+                        @manufacturer.Name
+                    </label>
+                    <br />
+                }
+            </div>
+        }
+
+        <div>
+            @if (Model.PriceFilter.Minimum > 0 || Model.PriceFilter.Maximum > 0)
+            {
+                <p>@Resource.Price:</p>
+                @(Html.Kendo().RangeSlider()
+                  .Name("price")
+                  .Min((double)Model.PriceFilter.Minimum)
+                  .Max((double)Model.PriceFilter.Maximum)
+                  .SmallStep(1)
+                  .LargeStep(10)
+                  .Events(x => x.Change("sendData"))
+                  .HtmlAttributes(new { id = "priceRange", @class = "filterOption" }))
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var filtersContainer = $('#filtersContainer');
+    var propertiesContainer = filtersContainer.find('#propertiesContainer');
+    var manufacturerContainer = filtersContainer.find('#manufacturerContainer');
+    var orderByContainer = $('#orderByDropdown');
+    var orderTypeContainer = $('#orderTypeDropdown');
+
+    function sendData() {
+        var priceRange = $('#priceRange').getKendoRangeSlider();
+
+        var filterObject = {
+            SelectedProperties: [],
+            Manufacturers: [],
+            PriceFilter: {
+                MinPrice: priceRange.options.selectionStart,
+                MaxPrice: priceRange.options.selectionEnd
+            }
+        };
+
+        var orderBy = orderByContainer.val();
+        var orderType = orderTypeContainer.val();
+
+
+        var selectedProperties = propertiesContainer.find(':checked');
+        selectedProperties.each(function (i, el) {
+            var element, property, id, value;
+            element = $(el);
+            property = element.data("property-id");
+            id = element.data("property-value-id");
+            value = element.data("value");
+
+            filterObject.SelectedProperties.push({
+                Id: id,
+                Value: value,
+                PropertyId: property
+            });
+        });
+
+        var selectedManufacturers = manufacturerContainer.find(":checked");
+        selectedManufacturers.each(function (i, el) {
+            var element = $(el);
+            filterObject.Manufacturers.push(element.data("manufacturer-id"));
+        });
+
+        var url = window.location.href + '/Filter';
+        url = url + '?orderType=' + orderType + '&orderBy=' + orderBy;
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: JSON.stringify(filterObject),
+            contentType: "application/json",
+            success: function (res) {
+                $('#filter-results').html(res);
+            }
+        });
+    };
+
+    $('.filterOption').on('click', sendData);
+    $('#orderTypeDropdown').on('change', sendData);
+    $('#orderByDropdown').on('change', sendData);
+</script>

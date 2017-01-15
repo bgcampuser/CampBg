@@ -1,0 +1,96 @@
+﻿@using System.Collections
+@using CampBg.Web.Areas.Administration.ViewModels
+
+@model ProductViewModel
+
+<div class="form-group">
+    @Html.HiddenFor(x => x.Id)
+
+    <div class="editor-label">
+        @Html.LabelFor(x => x.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Name)
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(x => x.Description)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Description)
+        @Html.ValidationMessageFor(x => x.Description)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(x => x.NameEn)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.NameEn)
+        @Html.ValidationMessageFor(x => x.NameEn)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(x => x.DescriptionEn)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.DescriptionEn)
+        @Html.ValidationMessageFor(x => x.DescriptionEn)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(x => x.Price)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Price)
+        @Html.ValidationMessageFor(x => x.Price)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(x => x.ManufacturerId)
+    </div>
+    <div class="editor-field">
+        @(Html.Kendo()
+              .ComboBox()
+              .Value("Manufacturer")
+              .Name("ManufacturerId")
+              .DataValueField("Id")
+              .DataTextField("Name")
+              .Filter(FilterType.Contains)
+              .BindTo((IEnumerable)ViewBag.Manufacturers))
+              
+        @Html.ValidationMessageFor(x => x.ManufacturerId)
+    </div>
+    
+
+    <div class="editor-label">
+        @Html.LabelFor(x => x.ManufacturerIdentificationNumber)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.ManufacturerIdentificationNumber)
+        @Html.ValidationMessageFor(x => x.ManufacturerIdentificationNumber)
+    </div>
+    
+    <div class="editor-label">
+        @Html.LabelFor(x => x.IsPopular)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.IsPopular)
+        @Html.ValidationMessageFor(x => x.IsPopular)
+    </div>
+    
+    <div class="editor-label">
+        @Html.LabelFor(x => x.SubcategoryOptionId)
+    </div>
+    <div class="editor-field">
+        @(Html.Kendo()
+                .ComboBox()
+                .Value("SubcategoryOption")
+                .Name("SubcategoryOptionId")
+                .DataValueField("Id")
+                .DataTextField("Name")
+                .Filter(FilterType.Contains)
+                .BindTo((IEnumerable)ViewBag.SubcategoryOptions))
+        @Html.ValidationMessageFor(x => x.SubcategoryOptionId)
+    </div>
+</div>

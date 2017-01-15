@@ -1,0 +1,95 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampBg.Data.Contracts", "Data\CampBg.Data.Contracts\CampBg.Data.Contracts.csproj", "{37E25D3E-6E2A-42BD-9DFB-BF5C19EBDEED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{5384D771-D8C4-4C6B-BCF3-BE12696EF5A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampBg.Data.Models", "Data\CampBg.Data.Models\CampBg.Data.Models.csproj", "{E562C942-9981-499E-A25A-6BD54374B464}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampBg.Data", "Data\CampBg.Data\CampBg.Data.csproj", "{5B60E68A-7A49-43B0-82A1-18D1638ECEC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampBg.Web", "Web\CampBg.Web\CampBg.Web.csproj", "{6E7BE8C0-C679-4445-8C69-1B2342A46182}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{2D4B67A4-2270-4FD3-AE18-B2846701ED09}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External Libraries", "External Libraries", "{A038DEDC-FDB4-4434-8CB6-6322504A8B57}"
+	ProjectSection(SolutionItems) = preProject
+		External Libraries\ElFinder.Net.dll = External Libraries\ElFinder.Net.dll
+		External Libraries\Kendo.Mvc.dll = External Libraries\Kendo.Mvc.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{0C9071D1-1E63-484F-B38A-2EC373744FF6}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{D7717C79-5B98-4E41-B088-9842DAB5B05F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions", "Extensions\Extensions\Extensions.csproj", "{BB46A231-B226-442D-A059-E55FBF5247D7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{B4AE0D2A-2124-4A7A-B799-3B35D6B94D4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCart", "Common\ShoppingCart\ShoppingCart.csproj", "{7F277C7C-E455-4002-84B7-A1A3E55B6AEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCart.Managers", "Common\ShoppingCartSessionManager\ShoppingCart.Managers.csproj", "{A7711A58-0A3D-404B-9E75-4AD9E5FEC457}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailSender", "Common\MailSender\MailSender.csproj", "{B84EC92D-6CEC-4F8F-9CDB-EE22D80C1670}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{37E25D3E-6E2A-42BD-9DFB-BF5C19EBDEED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37E25D3E-6E2A-42BD-9DFB-BF5C19EBDEED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37E25D3E-6E2A-42BD-9DFB-BF5C19EBDEED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37E25D3E-6E2A-42BD-9DFB-BF5C19EBDEED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E562C942-9981-499E-A25A-6BD54374B464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E562C942-9981-499E-A25A-6BD54374B464}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E562C942-9981-499E-A25A-6BD54374B464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E562C942-9981-499E-A25A-6BD54374B464}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B60E68A-7A49-43B0-82A1-18D1638ECEC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B60E68A-7A49-43B0-82A1-18D1638ECEC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B60E68A-7A49-43B0-82A1-18D1638ECEC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B60E68A-7A49-43B0-82A1-18D1638ECEC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E7BE8C0-C679-4445-8C69-1B2342A46182}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E7BE8C0-C679-4445-8C69-1B2342A46182}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E7BE8C0-C679-4445-8C69-1B2342A46182}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E7BE8C0-C679-4445-8C69-1B2342A46182}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB46A231-B226-442D-A059-E55FBF5247D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB46A231-B226-442D-A059-E55FBF5247D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB46A231-B226-442D-A059-E55FBF5247D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB46A231-B226-442D-A059-E55FBF5247D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F277C7C-E455-4002-84B7-A1A3E55B6AEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F277C7C-E455-4002-84B7-A1A3E55B6AEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F277C7C-E455-4002-84B7-A1A3E55B6AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F277C7C-E455-4002-84B7-A1A3E55B6AEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7711A58-0A3D-404B-9E75-4AD9E5FEC457}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7711A58-0A3D-404B-9E75-4AD9E5FEC457}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7711A58-0A3D-404B-9E75-4AD9E5FEC457}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7711A58-0A3D-404B-9E75-4AD9E5FEC457}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B84EC92D-6CEC-4F8F-9CDB-EE22D80C1670}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B84EC92D-6CEC-4F8F-9CDB-EE22D80C1670}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B84EC92D-6CEC-4F8F-9CDB-EE22D80C1670}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B84EC92D-6CEC-4F8F-9CDB-EE22D80C1670}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{37E25D3E-6E2A-42BD-9DFB-BF5C19EBDEED} = {5384D771-D8C4-4C6B-BCF3-BE12696EF5A4}
+		{E562C942-9981-499E-A25A-6BD54374B464} = {5384D771-D8C4-4C6B-BCF3-BE12696EF5A4}
+		{5B60E68A-7A49-43B0-82A1-18D1638ECEC6} = {5384D771-D8C4-4C6B-BCF3-BE12696EF5A4}
+		{6E7BE8C0-C679-4445-8C69-1B2342A46182} = {2D4B67A4-2270-4FD3-AE18-B2846701ED09}
+		{BB46A231-B226-442D-A059-E55FBF5247D7} = {D7717C79-5B98-4E41-B088-9842DAB5B05F}
+		{7F277C7C-E455-4002-84B7-A1A3E55B6AEA} = {B4AE0D2A-2124-4A7A-B799-3B35D6B94D4F}
+		{A7711A58-0A3D-404B-9E75-4AD9E5FEC457} = {B4AE0D2A-2124-4A7A-B799-3B35D6B94D4F}
+		{B84EC92D-6CEC-4F8F-9CDB-EE22D80C1670} = {B4AE0D2A-2124-4A7A-B799-3B35D6B94D4F}
+	EndGlobalSection
+EndGlobal

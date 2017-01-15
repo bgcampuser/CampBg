@@ -1,0 +1,19 @@
+﻿@model CampBg.Web.Areas.Administration.ViewModels.ManufacturerViewModel
+
+<div class="form-group">
+    @Html.HiddenFor(x => x.Id)
+    <div class="editor-label">
+        @Html.LabelFor(x => x.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Name)
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(x => x.IsInTopMenu)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.IsInTopMenu)
+        @Html.ValidationMessageFor(x => x.IsInTopMenu)
+    </div>
+</div>

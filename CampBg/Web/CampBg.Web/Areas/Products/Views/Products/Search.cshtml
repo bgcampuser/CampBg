@@ -1,0 +1,31 @@
+﻿@using Resource = CampBg.Web.Localization.Views;
+
+<div class="row">
+    <ol class="col-lg-12 breadcrumb margin-top-small">
+        <li>@Html.ActionLink(Resource.Home, "Index", new { area = string.Empty, controller = "Home" })</li>
+        <li class="active">@Resource.Search_results</li>
+    </ol>
+</div>
+
+@model IEnumerable<CampBg.Web.ViewModels.ProductListViewModel>
+
+<h3>@Resource.Search_results</h3>
+
+<div class="row">
+    @if (!this.Model.Any())
+    {
+        <div class="col-lg-12 text-center">@Resource.No_results</div>
+    }
+    else
+    {
+        @Html.DisplayFor(x => x, new { @class = "col-md-3 margin-top-small margin-bottom-big" })
+    }
+</div>
+
+<div class="row margin-top-big text-center">
+    @Resource.Page: 
+    @for (int i = 0; i < (int)this.ViewBag.PageCount; i++)
+    {
+        @Html.ActionLink((i + 1).ToString(), "Search", new { q = this.ViewBag.Query, page = i }, new { @class = "pagination-index" });
+    }
+</div>

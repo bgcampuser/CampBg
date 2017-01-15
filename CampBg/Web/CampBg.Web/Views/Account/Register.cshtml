@@ -1,0 +1,80 @@
+﻿@model CampBg.Web.Models.RegisterViewModel
+@using Resource = CampBg.Web.Localization.Views           
+
+@{
+    ViewBag.Title = Resource.Simple_register;
+}
+
+<div class="row">
+    <ol class="col-lg-12 breadcrumb margin-top-small">
+        <li>@Html.ActionLink("Home", "Index", new { area = string.Empty, controller = "Home" })</li>
+        <li class="active">
+            @string.Format("{0}", ViewBag.Title)
+        </li>
+    </ol>
+</div>
+
+<h2>@ViewBag.Title.</h2>
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("returnUrl", (string)ViewBag.ReturnUrl)
+    <h4>@Resource.Create_new_account</h4>
+    <hr />
+    <p>
+        @Resource.All_fields_mandatory
+    </p>
+    @*@Html.ValidationSummary()*@
+    <div class="form-group">
+        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.UserName)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ConfirmPassword)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.PhoneNumber)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.IsSubscribedForNewsletter, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.CheckBoxFor(m => m.IsSubscribedForNewsletter, new { @checked = "true" })
+            @Html.ValidationMessageFor(m => m.IsSubscribedForNewsletter)
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="@Resource.Simple_register" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

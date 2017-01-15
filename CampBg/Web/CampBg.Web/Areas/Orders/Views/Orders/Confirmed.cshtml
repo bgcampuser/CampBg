@@ -1,0 +1,13 @@
+﻿@model CampBg.Web.Areas.Orders.ViewModels.OrderPlacedViewModel
+          
+@using Resource = CampBg.Web.Localization.Views;
+
+@{
+    var orderConfirmationMessage = string.Format(Resource.Order_placed, Model.Id);
+}
+
+<div class="row">
+    <div class="col-lg-12 text-center">
+        @Html.Raw(orderConfirmationMessage)
+    </div>
+</div>

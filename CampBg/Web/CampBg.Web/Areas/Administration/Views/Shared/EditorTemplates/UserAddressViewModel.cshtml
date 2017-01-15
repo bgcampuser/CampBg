@@ -1,0 +1,28 @@
+﻿@model CampBg.Web.Areas.Administration.ViewModels.UserAddressViewModel
+
+<div class="form-group">
+    @Html.HiddenFor(x => x.Id)
+    <div class="editor-label">
+        @Html.LabelFor(x => x.City)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.City)
+        @Html.ValidationMessageFor(x => x.City)
+    </div>
+    
+    <div class="editor-label">
+        @Html.LabelFor(x => x.PostalCode)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.PostalCode)
+        @Html.ValidationMessageFor(x => x.PostalCode)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(x => x.Address)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Address)
+        @Html.ValidationMessageFor(x => x.Address)
+    </div>
+</div>

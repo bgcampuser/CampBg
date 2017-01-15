@@ -1,0 +1,36 @@
+﻿@model CampBg.Web.Areas.Administration.ViewModels.UserViewModel
+
+<div class="form-group">
+    @Html.HiddenFor(x => x.Id)
+    <div class="editor-label">
+        @Html.LabelFor(x => x.UserName)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.UserName)
+        @Html.ValidationMessageFor(x => x.UserName)
+    </div>
+    
+    <div class="editor-label">
+        @Html.LabelFor(x => x.Email)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Email)
+        @Html.ValidationMessageFor(x => x.Email)
+    </div>
+    
+    <div class="editor-label">
+        @Html.LabelFor(x => x.IsSubscribedForNewsletter)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.IsSubscribedForNewsletter)
+        @Html.ValidationMessageFor(x => x.IsSubscribedForNewsletter)
+    </div>
+    
+    <div class="editor-label">
+        @Html.LabelFor(x => x.IsDeleted)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.IsDeleted)
+        @Html.ValidationMessageFor(x => x.IsDeleted)
+    </div>
+</div>

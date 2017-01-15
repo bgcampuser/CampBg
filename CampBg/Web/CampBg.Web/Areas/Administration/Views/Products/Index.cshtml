@@ -1,0 +1,208 @@
+﻿@using System.Collections
+@using CampBg.Web.Areas.Administration.ViewModels
+@{
+    ViewBag.Title = "Products";
+}
+
+@* ReSharper disable ConvertToLambdaExpression *@
+
+<div class="row">
+    <ol class="col-lg-12 breadcrumb margin-top-small">
+        <li>@Html.ActionLink("Administration", "Index", "Home")</li>
+        <li class="active">Products</li>
+    </ol>
+</div>
+
+@(Html.Kendo()
+        .Grid<ProductViewModel>()
+        .Name("ProductsGrid")
+        .Columns(col =>
+            {
+                col.Bound(x => x.Id);
+                col.Bound(x => x.Name);
+                col.Bound(x => x.Price);
+                col.Bound(x => x.IsPopular);
+                col.Bound(x => x.ManufacturerIdentificationNumber);
+                col.ForeignKey(x => x.ManufacturerId, (IEnumerable)ViewBag.Manufacturers, "Id", "Name");
+                col.Command(x =>
+                    {
+                        x.Edit();
+                        x.Destroy();
+                    });
+            })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Create();
+            toolbar.Custom()
+                .Action("Index", "Home")
+                .Text("Back to administration");
+        })
+        .Editable(edit =>
+        {
+            edit.Mode(GridEditMode.PopUp);
+        })
+        .Filterable(filter =>
+            {
+                filter.Enabled(true);
+            })
+        .Sortable(sort =>
+            {
+                sort.Enabled(true);
+            })
+        .Pageable(page =>
+            {
+                page.Refresh(true);
+            })
+        .DataSource(data =>
+        {
+            data.Ajax()
+                .PageSize(15)
+                .Model(x => x.Id(model => model.Id))
+                .Read("GetProducts", "Products")
+                .Create("CreateProduct", "Products")
+                .Destroy("DeleteProduct", "Products")
+                .Update("UpdateProduct", "Products");
+        })
+      .ClientDetailTemplateId("productDetailTemplate")
+)
+
+<script type="text/kendo-templ" id="productDetailTemplate">
+    <div class="row">
+        <div class="col-lg-12">
+            @(Html.Kendo()
+            .Upload()
+            .Name("ImageUpload_#=Id#")
+            .HtmlAttributes(new { name = "images" })
+            .Multiple(true)
+            .Async(x =>
+            {
+                x.Save("SaveImages", "Products", new { id = "#:Id#" });
+                x.AutoUpload(false);
+            })
+            .ToClientTemplate())
+        </div>
+    </div>
+    <div class="row margin-top-small">
+        <div class="col-lg-6">
+            @(Html.Kendo().ListView<ProductImageViewModel>()
+                  .Name("Product_#=Id#_Images")
+                  .TagName("div")
+                  .ClientTemplateId("imagesTemplate")
+                  .DataSource(data =>
+                      {
+                          data.Read("GetProductImages", "Products", new { productId = "#=Id#" });
+                      })
+                  .ToClientTemplate())
+        </div>
+        <div class="col-lg-6">
+            <div><strong>Name:</strong> #:Name#</div>
+            <div><strong>Description:</strong> #:Description#</div>
+            <div><strong>Price:</strong> #:Price# BGN</div>
+        </div>
+    </div>
+    <h5>Properties</h5>
+    <div class="row">
+        <div class="col-lg-12">
+            @(Html.Kendo()
+                  .Grid<ProductPropertyViewModel>()
+                  .Name("ProductProperties_#=Id#")
+                  .Columns(col =>
+                      {
+                          col.Bound(x => x.Id);
+                          col.ForeignKey(x => x.PropertyId, (IEnumerable)ViewBag.Properties, "Id", "Name");
+                          col.Bound(x => x.Value);
+                          col.Command(x =>
+                              {
+                                  x.Edit();
+                                  x.Destroy();
+                              });
+                      })
+                  .ToolBar(tool =>
+                      {
+                          tool.Create();
+                      })
+                  .DataSource(data =>
+                      {
+                          data.Ajax()
+                              .Model(x => x.Id(model => model.Id))
+                              .Read("ReadProductProperties", "Properties", new { productId = "#=Id#" })
+                              .Create("CreateProductProperties", "Properties", new { productId = "#=Id#" })
+                              .Update("UpdateProductProperties", "Properties")
+                              .Destroy("DeleteProductProperties", "Properties");
+                      })
+                  .Editable(edit =>
+                      {
+                          edit.Mode(GridEditMode.PopUp);
+                      })
+                  .Pageable(p => p.Refresh(true))
+                  .HtmlAttributes(new { @class = "margin-top-small" })
+                  .ToClientTemplate())
+        </div>
+    </div>
+    <div>
+        <h5>Similar products</h5>
+        @(Html.Kendo()
+                  .Grid<ProductRelationViewModel>()
+                  .Name("ProductRelated_#=Id#")
+                  .Columns(col =>
+                      {
+                          col.Bound(x => x.RelationId);
+                          col.Bound(x => x.Name);
+                          col.Bound(x => x.NameEn);
+                          col.Command(x => x.Destroy());
+                      })
+                  .ToolBar(tool =>
+                      {
+                          tool.Create();
+                      })
+                  .DataSource(data =>
+                      {
+                          data.Ajax()
+                              .Model(x => x.Id(model => model.RelationId))
+                              .Read("ReadRelated", "Products", new { id = "#=Id#" })
+                              .Create("CreateRelated", "Products", new { id = "#=Id#" })
+                              .Destroy("RemoveRelated", "Products", new { id = "#=Id#" });
+                      })
+                  .Editable(edit =>
+                      {
+                          edit.Mode(GridEditMode.PopUp);
+                      })
+                  .Pageable(p => p.Refresh(true))
+                  .HtmlAttributes(new { @class = "margin-top-small" }).ToClientTemplate())
+    </div>
+</script>
+
+<script type="text/kendo-templ" id="imagesTemplate">
+    <div id="image_#=Id#" style="width: 170px; float: left;">
+        <img src="#:Thumbnail#" />
+        <div class="btn btn-default setAsDefaultBtn" data-img-id="#=Id#" data-product-id="#=ProductId#">
+            Set Default
+        </div>
+        <div class="btn btn-danger deleteBtn" data-img-id="#=Id#" data-product-id="#=ProductId#">
+            Delete
+        </div>
+    </div>
+</script>
+
+<script>
+    $('#ProductsGrid').on('click', '.setAsDefaultBtn', function () {
+        var id = $(this).data('img-id');
+        var productId = $(this).data('product-id');
+        $.get('@Url.Action("SetDefaultImage", new {controller = "Products", area="Administration"})' +
+            '?id=' + id + '&productId=' + productId, function () {
+                console.log('success!');
+            });
+    });
+
+    $('#ProductsGrid').on('click', '.deleteBtn', function () {
+        var id = $(this).data('img-id');
+        var productId = $(this).data('product-id');
+        $.get('@Url.Action("DeleteImage", new {controller = "Products", area="Administration"})' +
+            '?id=' + id + '&productId=' + productId, function () {
+                var imageToRemoveId = '#image_' + id;
+                $(imageToRemoveId).remove();
+            });
+    });
+</script>
+
+@* ReSharper restore ConvertToLambdaExpression *@

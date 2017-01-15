@@ -1,0 +1,108 @@
+﻿@model CampBg.Web.Areas.Orders.ViewModels.CartViewModel
+
+@using Resource = CampBg.Web.Localization.Views;
+
+@{
+    ViewBag.Title = Resource.Shopping_cart;
+}
+
+<div class="row">
+    <ol class="col-lg-12 breadcrumb margin-top-small">
+        <li>@Html.ActionLink(@Resource.Home, "Index", new { area = string.Empty, controller = "Home" })</li>
+        <li class="active">@ViewBag.Title</li>
+    </ol>
+</div>
+
+<div class="row">
+    @if (Model.Items.Any())
+    {
+        @Html.Partial("CartPartial", Model)
+        <div class="col-lg-offset-9 col-lg-2 margin-top-small">
+            @Html.ActionLink(Resource.To_confirmation, "Confirm", "Cart", new { area = "Orders" },
+                new { id = "confirm-purchase-button" })
+        </div>
+    }
+    else
+    {
+        <div class="col-lg-12">
+            @Resource.Shopping_cart_empty
+        </div>
+    }
+</div>
+
+@Html.ActionLink(Resource.Order_history, "Index", new { controller = "Orders", area = "Orders" }, new { @class = "text-white" })
+
+@section Scripts {
+    <script>
+        $('.cartItem').on('click', '.decreaseBtn', function () {
+            console.log(1);
+            var postObj = {};
+            var button = $(this);
+            var cartItem = $(button.closest('.cartItem'));
+            var quantityHolder = cartItem.find('.quantity');
+            var priceHolder = cartItem.find('.price');
+            var subtotalHolder = cartItem.find('.subtotal');
+            var obj = $(cartItem.find('.productId')[0]);
+            postObj.ProductId = obj.data('product-id');
+            postObj.SelectedProperties = [];
+            var propertyValues = cartItem.find('.propertyValuePair');
+            propertyValues.each(function (index, value) {
+                postObj.SelectedProperties.push({
+                    PropertyId: $(value).data('property-id'),
+                    PropertyValueId: $(value).data('property-value-id')
+                });
+            });
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "/Orders/Cart/DecreaseQuantity",
+                data: JSON.stringify(postObj),
+                dataType: "json",
+                success: function () {
+                    var quantity = +quantityHolder.text();
+                    quantity = quantity - 1;
+                    if (quantity <= 0) {
+                        cartItem.remove();
+                    } else {
+                        quantityHolder.text(quantity);
+                        var subtotal = +subtotalHolder.text();
+                        var price = +priceHolder.text();
+                        subtotal = price * quantity;
+                        subtotalHolder.text(subtotal);
+                    }
+                }
+            });
+        });
+
+        $('.cartItem').on('click', '.removeBtn', function () {
+            var postObj = {};
+            var button = $(this);
+            var cartItem = $(button.closest('.cartItem'));
+            var quantityHolder = cartItem.find('.quantity');
+            var priceHolder = cartItem.find('.price');
+            var subtotalHolder = cartItem.find('.subtotal');
+            var obj = $(cartItem.find('.productId')[0]);
+            postObj.ProductId = obj.data('product-id');
+            postObj.SelectedProperties = [];
+            var propertyValues = cartItem.find('.propertyValuePair');
+            propertyValues.each(function (index, value) {
+                postObj.SelectedProperties.push({
+                    PropertyId: $(value).data('property-id'),
+                    PropertyValueId: $(value).data('property-value-id')
+                });
+            });
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "/Orders/Cart/RemoveFromCart",
+                data: JSON.stringify(postObj),
+                dataType: "json",
+                success: function () {
+                    cartItem.remove();
+                }
+            });
+        });
+    </script>
+}

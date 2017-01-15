@@ -1,0 +1,30 @@
+﻿@model CampBg.Web.Areas.Orders.ViewModels.CartItemViewModel
+
+@using Resource = CampBg.Web.Localization.Views;
+
+<tr class="cartItem">
+    <td class ="text-center">
+        <img src="@Model.ThumbUrl" />
+        <div class="productId" style="visibility: hidden" data-product-id="@Model.Id"></div>
+        <p>@Model.Name</p>
+    </td>
+    <td>
+        @Html.DisplayFor(x => x.Properties)
+        @foreach (var prop in Model.Properties)
+        {
+            <div class="propertyValuePair" style="visibility: hidden" data-property-id="@prop.PropertyId" data-property-value-id="@prop.PropertyValueId"></div>
+        }
+    </td>
+    <td>
+        <div>@Resource.Quantity: <span class="quantity">@Model.Quantity</span></div>
+        <div>@Resource.Price: <span class="price">@Model.Price @Resource.Currency.</span></div>
+    </td>
+
+    <td>
+        <div>@Resource.Subtotal: <span class="subtotal">@(Model.Quantity * Model.Price) @Resource.Currency.</span></div>
+    </td>
+    <td>
+        <div class="btn btn-default decreaseBtn">@Resource.Descrease_quantity</div>
+        <div class="btn btn-danger removeBtn">@Resource.Remove</div>
+    </td>
+</tr>

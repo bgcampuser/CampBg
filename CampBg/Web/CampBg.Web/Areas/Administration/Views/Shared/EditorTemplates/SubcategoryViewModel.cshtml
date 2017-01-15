@@ -1,0 +1,42 @@
+﻿@using CampBg.Web.Areas.Administration.ViewModels
+
+@model SubcategoryViewModel
+
+<div class="form-group">
+    @Html.HiddenFor(x => x.Id)
+    <div class="editor-label">
+        @Html.LabelFor(x => x.Name)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Name)
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+    
+    <div class="editor-label">
+        @Html.LabelFor(x => x.NameEn)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.NameEn)
+        @Html.ValidationMessageFor(x => x.NameEn)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(x => x.CategoryId)
+    </div>
+    <div class="editor-field">
+        @(Html.Kendo().DropDownListFor(x => x.CategoryId)
+              .BindTo((IEnumerable<CategoryViewModel>)ViewBag.Categories)
+              .DataTextField("Name")
+              .Value("Select")
+              .DataValueField("Id"))
+        @Html.ValidationMessageFor(x => x.CategoryId)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(x => x.IsPopular)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.IsPopular)
+        @Html.ValidationMessageFor(x => x.IsPopular)
+    </div>
+</div>

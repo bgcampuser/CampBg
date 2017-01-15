@@ -1,0 +1,79 @@
+﻿@using CampBg.Web.Areas.Administration.ViewModels
+
+@{
+    ViewBag.Title = "Newsletter Administration";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@* ReSharper disable ConvertToLambdaExpression *@
+@(Html.Kendo()
+        .Grid<NewsletterViewModel>()
+        .Name("NewsletterGrid")
+        .Columns(col =>
+        {
+            col.Bound(x => x.Id);
+            col.Bound(x => x.Title);
+            col.Bound(x => x.AlreadySent);
+            col.Command(x =>
+            {
+                x.Edit();
+                x.Destroy();
+            });
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Create();
+            toolbar.Custom()
+                .Action("Index", "Home")
+                .Text("Back to administration");
+        })
+        .Editable(edit =>
+            {
+                edit.Mode(GridEditMode.PopUp);
+            })
+        .Filterable(filter =>
+            {
+                filter.Enabled(true);
+            })
+        .Sortable(sort =>
+            {
+                sort.Enabled(true);
+            })
+        .Pageable(page =>
+            {
+                page.Refresh(true);
+            })
+        .DataSource(data =>
+        {
+            data.Ajax()
+                .PageSize(15)
+                .Model(x => x.Id(model => model.Id))
+                .Read("Read", "Newsletter")
+                .Create("Create", "Newsletter")
+                .Destroy("Destroy", "Newsletter")
+                .Update("Update", "Newsletter");
+        }).ClientDetailTemplateId("newsletter-detail-template"))
+@* ReSharper restore ConvertToLambdaExpression *@
+
+<script type="text/kendo-templ" id="newsletter-detail-template">
+    <p>
+        #=Contents#
+    </p>
+    <div>
+        <a class="btn btn-default send-button" data-newsletterid="#=Id#">Send</a>
+    </div>
+
+</script>
+
+<script>
+    $('#NewsletterGrid').on('click', '.send-button', function() {
+        var self = $(this);
+        var id = self.data('newsletterid');
+        $.get('@Url.Action("SendNewsletter")/' + id, function() {
+            noty({ text: 'Sent successfully!' });
+        }).fail(function() {
+            noty({ text: 'An error occured' });
+        });
+    })
+</script>
