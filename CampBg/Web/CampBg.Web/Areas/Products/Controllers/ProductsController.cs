@@ -149,17 +149,18 @@
 
         public ActionResult BySubcategory(string name, string category, int page = 0)
         {
-            var products =
-                this.Data.Products.All()
-                    .Where(
-                        x =>
-                        x.SubcategoryOption.Subcategory.Name == name
-                        && x.SubcategoryOption.Subcategory.Category.Name == category);
+            IQueryable<Product> products;
 
             FilterPageViewModel model;
 
             if (Thread.CurrentThread.CurrentCulture.Name == "bg-BG")
             {
+                products =this.Data.Products.All()
+                                .Where(
+                                    x =>
+                                    x.SubcategoryOption.Subcategory.Name == name
+                                    && x.SubcategoryOption.Subcategory.Category.Name == category);
+
                 model = new FilterPageViewModel
                 {
                     InitialProducts =
@@ -193,6 +194,12 @@
             }
             else
             {
+                products = this.Data.Products.All()
+                                .Where(
+                                    x =>
+                                    x.SubcategoryOption.Subcategory.NameEn == name
+                                    && x.SubcategoryOption.Subcategory.Category.NameEn == category);
+
                 model = new FilterPageViewModel
                 {
                     InitialProducts =
@@ -232,8 +239,10 @@
                         !x.IsDeleted
                         && x.Products.Any(
                             z =>
-                            z.SubcategoryOption.Subcategory.Category.Name == category
-                            && z.SubcategoryOption.Subcategory.Name == name))
+                            (z.SubcategoryOption.Subcategory.Category.Name == category
+                            && z.SubcategoryOption.Subcategory.Name == name) ||
+                            (z.SubcategoryOption.Subcategory.Category.NameEn == category
+                            && z.SubcategoryOption.Subcategory.NameEn == name)))
                     .Select(ManufacturerViewModel.FromManufacturer);
 
             model.Filters.PriceFilter = new PriceViewModel
@@ -393,7 +402,10 @@
 
             filterResult = this.ApplyOrderBy(filterResult, orderBy, orderType);
 
-            var filterResultViewModel = filterResult.Skip(FilterPageSize * page).Take(PageSize).Select(ProductListViewModel.FromProduct);
+            var filterResultViewModel = Thread.CurrentThread.CurrentCulture.Name == "bg-BG" ? 
+                filterResult.Skip(FilterPageSize * page).Take(PageSize).Select(ProductListViewModel.FromProduct) :
+                filterResult.Skip(FilterPageSize * page).Take(PageSize).Select(ProductListViewModel.FromProductEn);
+
             this.AttachPagination(filterResult, page);
 
             return this.PartialView("FilterResult", filterResultViewModel);

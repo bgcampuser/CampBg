@@ -145,7 +145,7 @@ namespace CampBg.Web.Areas.Orders.Controllers
             var paymentInfo = this.paymentInfoString(order, addReceipt);
             var deliveryInfo = this.deliveryInfoString(order);
             var orderInfo = this.orderInfo(order, isBg);
-            var total = order.OrderItems.Sum(x => x.Price);
+            var total = this.orderTotalPrice(order);
             var paymentMethodString = this.getPaymentMethodString(order.PaymentMethod);
             var deliveryMethod = "EKONT";
             var paymentDetailsString = addReceipt ? ResourceEmails.Payment_information : string.Empty;
@@ -192,10 +192,22 @@ namespace CampBg.Web.Areas.Orders.Controllers
             {
                 var productName = isBg ? orderItem.Product.Name : orderItem.Product.NameEn;
 
-                sb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>", productName, orderItem.Quantity, orderItem.Price);
+                sb.AppendFormat("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>", productName, orderItem.Quantity, orderItem.Quantity * orderItem.Price);
             }
 
             return sb.ToString();
+        }
+
+        private decimal orderTotalPrice(Order order)
+        {
+            var total = 0M;
+
+            foreach (var orderItem in order.OrderItems)
+            {
+                total += orderItem.Quantity * orderItem.Price;
+            }
+
+            return total;
         }
 
         private string deliveryInfoString(Order order)
