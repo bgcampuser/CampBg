@@ -8,12 +8,16 @@
     using System.Web.Helpers;
     using System.Web.Hosting;
     using System.Web.Mvc;
+    using System.Drawing;
 
     using CampBg.Data.Models;
     using CampBg.Web.Areas.Administration.ViewModels;
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
+
+    using ImageProcessor;
+    using ImageProcessor.Imaging;
 
     public class ProductsController : AdministrationBaseController
     {
@@ -271,22 +275,58 @@
         }
 
         private void ProcessImage(
-            HttpPostedFileBase postedFile,
-            string imageLocation,
-            string thumbLocation)
+           HttpPostedFileBase postedFile,
+           string imageLocation,
+           string thumbLocation)
         {
+            MemoryStream memoryStream = new MemoryStream();
+            postedFile.InputStream.CopyTo(memoryStream);
+            byte[] imageContent = memoryStream.ToArray();
+
             var webImage = new WebImage(postedFile.InputStream);
 
             // temporarily save the original image
             webImage.Save(imageLocation + "_original");
 
-            webImage.Resize(317, 342);
-            webImage.Crop(1, 1, 1, 1);
-            webImage.Save(imageLocation);
+            int quality = 100;
 
-            webImage.Resize(172, 172);
-            webImage.Crop(1, 1, 1, 1);
-            webImage.Save(thumbLocation);
+            using (var inStream = new MemoryStream(imageContent))
+            {
+                using (var outStream = new MemoryStream())
+                {
+                    using (ImageFactory imageFactory = new ImageFactory())
+                    {
+                        // Load, resize, set the format and quality and save an image.
+                        imageFactory.Load(inStream)
+                                    .Resize(new ResizeLayer(new Size(317, 342), ResizeMode.Max))
+                                    .Crop(new CropLayer(1, 1, 1, 1))
+                                    .Quality(quality)
+                                    .Save(outStream);
+                    }
+                    
+                    Image img = Image.FromStream(outStream);
+                    img.Save(imageLocation);
+                }
+            }
+
+            using (var inStream = new MemoryStream(imageContent))
+            {
+                using (var outStream = new MemoryStream())
+                {
+                    using (ImageFactory imageFactory = new ImageFactory())
+                    {
+                        // Load, resize, set the format and quality and save an image.
+                        imageFactory.Load(inStream)
+                                    .Resize(new ResizeLayer(new Size(172, 172), ResizeMode.Max))
+                                    .Crop(new CropLayer(1, 1, 1, 1))
+                                    .Quality(quality)
+                                    .Save(outStream);
+                    }
+
+                    Image img = Image.FromStream(outStream);
+                    img.Save(thumbLocation);
+                }
+            }
         }
     }
 }
