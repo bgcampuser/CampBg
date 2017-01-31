@@ -112,3 +112,4 @@ UpgradeLog*.XML
 # LocalDb files
 *.mdf
 *.ldf
+CampBg/Web/CampBg.Web/SiteContent/

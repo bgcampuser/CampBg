@@ -294,6 +294,7 @@
     <Compile Include="Areas\Users\Controllers\ProfileController.cs" />
     <Compile Include="Areas\Users\ViewModels\DeliveryAddressViewModel.cs" />
     <Compile Include="Controllers\ErrorsController.cs" />
+    <Compile Include="Infrastructure\DecimalModelBinder.cs" />
     <Compile Include="ViewModels\ForgottenPasswordViewModel.cs" />
     <Compile Include="ViewModels\ManufacturerIndexViewModel.cs" />
     <Compile Include="ViewModels\PopularCategoryViewModel.cs" />
@@ -2983,6 +2984,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\kendo\kendo.all.min.js" />
     <Content Include="Scripts\kendo\kendo.aspnetmvc.min.js" />
+    <Content Include="Scripts\kendo\kendo.culture.bg-BG.min.js" />
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\endlessScroll.min.js" />
