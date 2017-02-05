@@ -203,6 +203,27 @@
                 $(imageToRemoveId).remove();
             });
     });
+
+    $('#ProductsGrid').on('click', '.k-grid-add', function () {
+        var subcategoryVal = $('#SubcategoryId').val();
+        var manufacturerVal = $('#ManufacturerId').val();
+        var categoryVal = $('#CategoryId').val();
+
+        if (subcategoryVal == '0') {
+            $('#SubcategoryId').val('');
+            $('input[name=SubcategoryId_input]').val('');
+        }
+
+        if (manufacturerVal == '0') {
+            $('#ManufacturerId').val('');
+            $('input[name=ManufacturerId_input]').val('');
+        }
+
+        if (categoryVal == '0') {
+            $('#CategoryId').val('');
+            $('input[name=CategoryId_input]').val('');
+        }
+    })
 </script>
 
 @* ReSharper restore ConvertToLambdaExpression *@

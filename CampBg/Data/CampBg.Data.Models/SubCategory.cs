@@ -15,12 +15,14 @@
 
         public bool IsPopular { get; set; }
 
-        public ICollection<Property> Properties { get; set; }
+        //public ICollection<Property> Properties { get; set; }
 
         public int CategoryId { get; set; }
 
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
+
+        public ICollection<Product> Products { get; set; }
 
         public ICollection<SubcategoryOption> SubcategoryOptions { get; set; }
     }

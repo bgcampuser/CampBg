@@ -27,12 +27,14 @@
                             Description = product.Description,
                             DescriptionEn = product.DescriptionEn,
                             ManufacturerId = product.ManufacturerId,
+                            CategoryId = product.Subcategory.Category.Id,
+                            SubcategoryId = product.SubcategoryId.Value,
                             SubcategoryOptionId = product.SubcategoryOptionId,
                             IsPopular = product.IsPopular,
                             ManufacturerIdentificationNumber = product.ManufacturerIdentificationNumber,
-                            Properties =
-                                product.PropertyValues.AsQueryable()
-                                .Select(PropertyValueViewModel.FromPropertyValue)
+                            Properties = product.PropertyValues
+                                                .AsQueryable()
+                                                .Select(PropertyValueViewModel.FromPropertyValue)
                         };
             }
         }
@@ -60,15 +62,26 @@
         public string DescriptionEn { get; set; }
 
         [Display(Name = "Производител")]
+        [Required]
         public int ManufacturerId { get; set; }
 
-        public int SubcategoryOptionId { get; set; }
+        [Required]
+        [Display(Name = "Подкатегория")]
+        public int SubcategoryId { get; set; }
+
+        [Display(Name = "Опция на подкатегория")]
+        public int? SubcategoryOptionId { get; set; }
 
         [Display(Name = "В популярни")]
         public bool IsPopular { get; set; }
 
         public IEnumerable<PropertyValueViewModel> Properties { get; set; }
 
+        [Display(Name = "Индификационен номер")]
         public string ManufacturerIdentificationNumber { get; set; }
+
+        [Required]
+        [Display(Name = "Категория")]
+        public int CategoryId { get; set; }
     }
 }

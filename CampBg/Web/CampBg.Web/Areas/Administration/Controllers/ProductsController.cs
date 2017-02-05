@@ -35,21 +35,57 @@
                                                                                 x.Name
                                                                             });
 
-            this.ViewBag.SubcategoryOptions =
-                this.Data.SubcategoryOptions.All()
-                    .Include(x => x.Subcategory)
-                    .Include(x => x.Subcategory.Category)
-                    .ToList()
-                    .Select(
-                        x =>
-                        new
-                            {
-                                x.Id,
-                                Name =
-                            string.Format("{0} -> {1} -> {2}", x.Subcategory.Category.Name, x.Subcategory.Name, x.Name)
-                            });
-
+            this.ViewBag.Categories = this.Data.Categories.All().Select(x => new
+                                                                            {
+                                                                                x.Id,
+                                                                                x.Name
+                                                                            });
             return this.View();
+        }
+
+
+        public JsonResult GetSubcategories(int? categoryId)
+        {
+            var subcategories = this.Data.Subcategories.All();
+
+
+            if (categoryId != null)
+            {
+                subcategories = subcategories.Where(p => p.CategoryId == categoryId);
+            }
+
+            var result = subcategories
+                            .ToList()
+                            .Select(x =>
+                                    new
+                                    {
+                                        x.Id,
+                                        Name = x.Name
+                                    });
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetSubcategoryOptions(int? subcategoryId)
+        {
+            var subcategoryOptions = this.Data.SubcategoryOptions.All();
+
+
+            if (subcategoryId != null)
+            {
+                subcategoryOptions = subcategoryOptions.Where(p => p.SubcategoryId == subcategoryId);
+            }
+
+            var result = subcategoryOptions
+                            .ToList()
+                            .Select(x =>
+                                    new
+                                    {
+                                        x.Id,
+                                        Name = x.Name
+                                    });
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult GetProducts([DataSourceRequest]DataSourceRequest request)
@@ -61,24 +97,25 @@
 
         public ActionResult CreateProduct([DataSourceRequest]DataSourceRequest request, ProductViewModel model)
         {
-                if (this.ModelState.IsValid)
-                {
-                    var product = new Product
-                                      {
-                                          Name = model.Name,
-                                          NameEn = model.NameEn,
-                                          Price = model.Price,
-                                          Description = model.Description,
-                                          DescriptionEn = model.DescriptionEn,
-                                          ManufacturerId = model.ManufacturerId,
-                                          SubcategoryOptionId = model.SubcategoryOptionId,
-                                          IsPopular = model.IsPopular,
-                                          ManufacturerIdentificationNumber = model.ManufacturerIdentificationNumber,
-                                      };
-                    this.Data.Products.Add(product);
-                    this.Data.SaveChanges();
-                    model.Id = product.Id;
-                }
+            if (this.ModelState.IsValid)
+            {
+                var product = new Product
+                                  {
+                                      Name = model.Name,
+                                      NameEn = model.NameEn,
+                                      Price = model.Price,
+                                      Description = model.Description,
+                                      DescriptionEn = model.DescriptionEn,
+                                      ManufacturerId = model.ManufacturerId,
+                                      SubcategoryId = model.SubcategoryId,
+                                      SubcategoryOptionId = model.SubcategoryOptionId,
+                                      IsPopular = model.IsPopular,
+                                      ManufacturerIdentificationNumber = model.ManufacturerIdentificationNumber,
+                                  };
+                this.Data.Products.Add(product);
+                this.Data.SaveChanges();
+                model.Id = product.Id;
+            }
 
             return this.Json(new[] { model }.ToDataSourceResult(request, this.ModelState));
         }
@@ -100,6 +137,7 @@
                 product.Description = model.Description;
                 product.DescriptionEn = model.DescriptionEn;
                 product.ManufacturerId = model.ManufacturerId;
+                product.SubcategoryId = model.SubcategoryId;
                 product.SubcategoryOptionId = model.SubcategoryOptionId;
                 product.IsPopular = model.IsPopular;
                 product.ManufacturerIdentificationNumber = model.ManufacturerIdentificationNumber;
@@ -303,7 +341,7 @@
                                     .Quality(quality)
                                     .Save(outStream);
                     }
-                    
+
                     Image img = Image.FromStream(outStream);
                     img.Save(imageLocation);
                 }

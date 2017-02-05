@@ -2,11 +2,10 @@
 {
     using System;
     using System.Data.Entity;
+    using System.Data.Entity.ModelConfiguration.Conventions;
     using System.Linq;
-
     using CampBg.Data.Contracts;
     using CampBg.Data.Models;
-
     using Microsoft.AspNet.Identity.EntityFramework;
 
     public class CampContext : IdentityDbContext<UserProfile>, ICampContext
@@ -96,6 +95,13 @@
                     entity.ModifiedOn = DateTime.Now;
                 }
             }
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

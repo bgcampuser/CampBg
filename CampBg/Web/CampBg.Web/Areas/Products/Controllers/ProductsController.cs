@@ -155,11 +155,11 @@
 
             if (Thread.CurrentThread.CurrentCulture.Name == "bg-BG")
             {
-                products =this.Data.Products.All()
+                products = this.Data.Products.All()
                                 .Where(
                                     x =>
-                                    x.SubcategoryOption.Subcategory.Name == name
-                                    && x.SubcategoryOption.Subcategory.Category.Name == category);
+                                    x.Subcategory.Name == name
+                                    && x.Subcategory.Category.Name == category);
 
                 model = new FilterPageViewModel
                 {
@@ -197,8 +197,8 @@
                 products = this.Data.Products.All()
                                 .Where(
                                     x =>
-                                    x.SubcategoryOption.Subcategory.NameEn == name
-                                    && x.SubcategoryOption.Subcategory.Category.NameEn == category);
+                                    x.Subcategory.NameEn == name
+                                    && x.Subcategory.Category.NameEn == category);
 
                 model = new FilterPageViewModel
                 {
@@ -239,10 +239,10 @@
                         !x.IsDeleted
                         && x.Products.Any(
                             z =>
-                            (z.SubcategoryOption.Subcategory.Category.Name == category
-                            && z.SubcategoryOption.Subcategory.Name == name) ||
-                            (z.SubcategoryOption.Subcategory.Category.NameEn == category
-                            && z.SubcategoryOption.Subcategory.NameEn == name)))
+                            (z.Subcategory.Category.Name == category
+                            && z.Subcategory.Name == name) ||
+                            (z.Subcategory.Category.NameEn == category
+                            && z.Subcategory.NameEn == name)))
                     .Select(ManufacturerViewModel.FromManufacturer);
 
             model.Filters.PriceFilter = new PriceViewModel
@@ -266,6 +266,7 @@
                 this.Data.Products.All()
                     .Where(
                         x =>
+                        x.SubcategoryOption != null &&
                         x.SubcategoryOption.Subcategory.Name == subcategory
                         && x.SubcategoryOption.Subcategory.Category.Name == category
                         && x.SubcategoryOption.Name == subcategoryOption);
@@ -352,6 +353,7 @@
                         !x.IsDeleted
                         && x.Products.Any(
                             z =>
+                            z.SubcategoryOption != null &&
                             z.SubcategoryOption.Subcategory.Category.Name == category
                             && z.SubcategoryOption.Subcategory.Name == subcategory
                             && z.SubcategoryOption.Name == subcategoryOption))
@@ -402,7 +404,7 @@
 
             filterResult = this.ApplyOrderBy(filterResult, orderBy, orderType);
 
-            var filterResultViewModel = Thread.CurrentThread.CurrentCulture.Name == "bg-BG" ? 
+            var filterResultViewModel = Thread.CurrentThread.CurrentCulture.Name == "bg-BG" ?
                 filterResult.Skip(FilterPageSize * page).Take(PageSize).Select(ProductListViewModel.FromProduct) :
                 filterResult.Skip(FilterPageSize * page).Take(PageSize).Select(ProductListViewModel.FromProductEn);
 
@@ -489,8 +491,8 @@
         {
             var result = this.Data.Products.All()
                 .Where(x =>
-                    (x.SubcategoryOption.Subcategory.Name == name || x.SubcategoryOption.Subcategory.NameEn == name)
-                    && (x.SubcategoryOption.Subcategory.Category.Name == category || x.SubcategoryOption.Subcategory.Category.NameEn == category));
+                    (x.Subcategory.Name == name || x.Subcategory.NameEn == name) &&
+                    (x.Subcategory.Category.Name == category || x.Subcategory.Category.NameEn == category));
 
             return result;
         }
@@ -501,12 +503,10 @@
                 this.Data.Products.All()
                     .Where(
                         x =>
-                        (x.SubcategoryOption.Name == subcategoryOption
-                         || x.SubcategoryOption.NameEn == subcategoryOption)
-                        && (x.SubcategoryOption.Subcategory.Name == name
-                            || x.SubcategoryOption.Subcategory.NameEn == name)
-                        && (x.SubcategoryOption.Subcategory.Category.Name == category
-                            || x.SubcategoryOption.Subcategory.Category.NameEn == category));
+                         x.SubcategoryOption != null &&
+                        (x.SubcategoryOption.Name == subcategoryOption || x.SubcategoryOption.NameEn == subcategoryOption) &&
+                        (x.SubcategoryOption.Subcategory.Name == name || x.SubcategoryOption.Subcategory.NameEn == name) &&
+                        (x.SubcategoryOption.Subcategory.Category.Name == category || x.SubcategoryOption.Subcategory.Category.NameEn == category));
 
             return result;
         }

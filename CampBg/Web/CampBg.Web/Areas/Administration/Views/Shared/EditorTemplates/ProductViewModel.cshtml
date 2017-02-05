@@ -56,8 +56,11 @@
               .Name("ManufacturerId")
               .DataValueField("Id")
               .DataTextField("Name")
+              .Placeholder("Select Manufacturer...")
               .Filter(FilterType.Contains)
-              .BindTo((IEnumerable)ViewBag.Manufacturers))
+              .BindTo((IEnumerable)ViewBag.Manufacturers)
+              .HtmlAttributes(new { style = "width:85%;" })
+        )
               
         @Html.ValidationMessageFor(x => x.ManufacturerId)
     </div>
@@ -78,19 +81,104 @@
         @Html.EditorFor(x => x.IsPopular)
         @Html.ValidationMessageFor(x => x.IsPopular)
     </div>
+
+    <div class="editor-label">
+       @Html.LabelFor(x => x.CategoryId)
+    </div>
+
+    <div class="editor-field">
+        @(Html.Kendo()
+                .ComboBox()
+                .Value("Category")
+                .Name("CategoryId")
+                .DataValueField("Id")
+                .DataTextField("Name")
+                .Placeholder("Select Category...")
+                .Filter(FilterType.Contains)
+                .BindTo((IEnumerable)ViewBag.Categories)
+                .HtmlAttributes(new { style = "width:85%;" })
+        )
+        @Html.ValidationMessageFor(x => x.CategoryId)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(x => x.SubcategoryId)
+    </div>
     
+    <div class="editor-field">
+        @(Html.Kendo()
+                .ComboBox()
+                .Value("Subcategory")
+                .Name("SubcategoryId")
+                .DataValueField("Id")
+                .DataTextField("Name")
+                .Placeholder("Select Subcategory...")
+                .Filter(FilterType.Contains)
+                .BindTo((IEnumerable)ViewBag.Subcategories)
+                .HtmlAttributes(new { style = "width:85%;" })
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("GetSubcategories", "Products")
+                            .Data
+                            (
+                                @<text>
+                                        function () {
+                                            return {
+                                                categoryId: $("#CategoryId").val()
+                                            };
+                                        }
+                                </text>
+                            );
+                    })
+                    .ServerFiltering(true);
+                })
+                .Enable(false)
+                .AutoBind(false)
+                .CascadeFrom("CategoryId")
+                        
+            )
+      
+        @Html.ValidationMessageFor(x => x.SubcategoryId)
+    </div>
+
     <div class="editor-label">
         @Html.LabelFor(x => x.SubcategoryOptionId)
     </div>
     <div class="editor-field">
         @(Html.Kendo()
                 .ComboBox()
+                .Placeholder("Select Subcategory Option...")
                 .Value("SubcategoryOption")
                 .Name("SubcategoryOptionId")
                 .DataValueField("Id")
                 .DataTextField("Name")
                 .Filter(FilterType.Contains)
-                .BindTo((IEnumerable)ViewBag.SubcategoryOptions))
+                .BindTo((IEnumerable)ViewBag.SubcategoryOptions)
+                .HtmlAttributes(new { style = "width:85%;", data_value_primitive="true" })
+                .DataSource(source =>
+                {
+                    source.Read(read =>
+                    {
+                        read.Action("GetSubcategoryOptions", "Products")
+                            .Data
+                            (
+                                @<text>
+                                        function () {
+                                            return {
+                                                subcategoryId: $("#SubcategoryId").val()
+                                            };
+                                        }
+                                </text>
+                            );
+                    })
+                    .ServerFiltering(true);
+                })
+                .Enable(false)
+                .AutoBind(false)
+                .CascadeFrom("SubcategoryId")
+        )
         @Html.ValidationMessageFor(x => x.SubcategoryOptionId)
     </div>
 </div>

@@ -18,7 +18,7 @@
         [ForeignKey("SubcategoryId")]
         public Subcategory Subcategory { get; set; }
 
-        public ICollection<Product> Products { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
 
         public System.DateTime? DeletedOn { get; set; }
 

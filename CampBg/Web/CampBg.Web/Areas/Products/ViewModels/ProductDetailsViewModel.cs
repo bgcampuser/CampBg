@@ -49,8 +49,8 @@
                                                             .Take(RelatedProductsCount)
                                                             .Select(ProductListViewModel.FromProduct),
                                        SubcategoryOption = prod.SubcategoryOption.Name,
-                                       Subcategory = prod.SubcategoryOption.Subcategory.Name,
-                                       Category = prod.SubcategoryOption.Subcategory.Category.Name
+                                       Subcategory = prod.Subcategory.Name,
+                                       Category = prod.Subcategory.Category.Name
                                    };
             }
         }
@@ -90,8 +90,8 @@
                                          .Take(RelatedProductsCount)
                                          .Select(ProductListViewModel.FromProductEn),
                     SubcategoryOption = prod.SubcategoryOption.NameEn,
-                    Subcategory = prod.SubcategoryOption.Subcategory.NameEn,
-                    Category = prod.SubcategoryOption.Subcategory.Category.NameEn
+                    Subcategory = prod.Subcategory.NameEn,
+                    Category = prod.Subcategory.Category.NameEn
                 };
             }
         }
