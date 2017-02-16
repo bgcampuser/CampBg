@@ -104,7 +104,7 @@
     <div class="editor-label">
         @Html.LabelFor(x => x.SubcategoryId)
     </div>
-    
+
     <div class="editor-field">
         @(Html.Kendo()
                 .ComboBox()
@@ -133,18 +133,36 @@
                             );
                     })
                     .ServerFiltering(true);
+                    
                 })
                 .Enable(false)
                 .AutoBind(false)
                 .CascadeFrom("CategoryId")
-                        
-            )
+
+)
       
         @Html.ValidationMessageFor(x => x.SubcategoryId)
     </div>
 
+    <script>
+        function subcategoryOptionValidation(e) {
+
+            if (e.response.length > 0) {
+                $('.subcategory-option-label').show();
+                $('input[name=SubcategoryOptionId_input]').closest('.editor-field').show();
+                $('input[name=SubcategoryOptionId_input]').attr('data-val-required', 'This field is required.');
+            }
+            else {
+                $('.subcategory-option-label').hide();
+                $('input[name=SubcategoryOptionId_input]').closest('.editor-field').hide();
+                $('input[name=SubcategoryOptionId_input]').removeAttr('data-val-required');
+            }
+
+        }
+    </script>
+
     <div class="editor-label">
-        @Html.LabelFor(x => x.SubcategoryOptionId)
+        @Html.LabelFor(x => x.SubcategoryOptionId, new { @class= "subcategory-option-label" })
     </div>
     <div class="editor-field">
         @(Html.Kendo()
@@ -173,7 +191,8 @@
                                 </text>
                             );
                     })
-                    .ServerFiltering(true);
+                    .ServerFiltering(true)
+                    .Events(e => e.RequestEnd("subcategoryOptionValidation"));
                 })
                 .Enable(false)
                 .AutoBind(false)
@@ -182,3 +201,4 @@
         @Html.ValidationMessageFor(x => x.SubcategoryOptionId)
     </div>
 </div>
+
