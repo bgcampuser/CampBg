@@ -22,20 +22,23 @@
 
             })
         </li>
-        <li>
-            @Html.ActionLink(Model.SubcategoryOption, "BySubcategoryOption",
-        new
+        @if (!string.IsNullOrEmpty(Model.SubcategoryOption))
         {
-            area = "Products",
-            controller = "Products",
-            subcategory = Model.Subcategory,
-            category = Model.Category,
-            subcategoryOption = Model.SubcategoryOption
+            <li>
+                @Html.ActionLink(Model.SubcategoryOption, "BySubcategoryOption",
+                new
+                {
+                    area = "Products",
+                    controller = "Products",
+                    subcategory = Model.Subcategory,
+                    category = Model.Category,
+                    subcategoryOption = Model.SubcategoryOption
 
-        })
-    </li>
-    <li class="active">@Model.Name</li>
-</ol>
+                })
+            </li>
+        }
+        <li class="active">@Model.Name</li>
+    </ol>
 </div>
 <div class="row">
     <div class="col-lg-3">

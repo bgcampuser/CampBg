@@ -34,6 +34,8 @@
         public Manufacturer Manufacturer { get; set; }
 
         public int? SubcategoryId { get; set; }
+
+        [ForeignKey("SubcategoryId")]
         public Subcategory Subcategory { get; set; }
 
         public int? SubcategoryOptionId { get; set; }
