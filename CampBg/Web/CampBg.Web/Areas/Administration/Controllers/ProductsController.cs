@@ -128,9 +128,18 @@
                 this.ModelState.AddModelError("Id", "Invalid id was provided");
             }
 
+            if(model.SubcategoryOptionId.HasValue)
+            {
+                var subcategoryOption = this.Data.SubcategoryOptions.GetById(model.SubcategoryOptionId.Value);
+
+                if(subcategoryOption.SubcategoryId != model.SubcategoryId)
+                {
+                    model.SubcategoryOptionId = null;
+                }
+            }
+
             if (this.ModelState.IsValid)
             {
-
                 product.Name = model.Name;
                 product.NameEn = model.NameEn;
                 product.Price = model.Price;
