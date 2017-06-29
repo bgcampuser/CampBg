@@ -15,6 +15,7 @@
             this.PropertyValueId = cartProperty.PropertyValueId;
             this.PropertyName = entityPropertyValue.Property.Name;
             this.Value = entityPropertyValue.Value;
+            this.ValueEn = entityPropertyValue.ValueEn;
         }
 
         public int PropertyId { get; set; }
@@ -24,5 +25,7 @@
         public string PropertyName { get; set; }
 
         public string Value { get; set; }
+
+        public string ValueEn { get; set; }
     }
 }

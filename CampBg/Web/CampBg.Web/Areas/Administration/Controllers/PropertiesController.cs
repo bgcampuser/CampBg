@@ -89,7 +89,7 @@
         {
             var productProperties =
                 this.Data.Products.GetById(productId)
-                    .PropertyValues.AsQueryable()
+                    .PropertyValues.Where(x => !x.IsDeleted).AsQueryable()
                     .Select(ProductPropertyViewModel.FromPropertyValue);
 
             return this.Json(productProperties.ToDataSourceResult(request, this.ModelState), JsonRequestBehavior.AllowGet);
@@ -103,13 +103,13 @@
             {
                 var propertyValue =
                     this.Data.PropertyValues.All()
-                        .FirstOrDefault(x => x.PropertyId == model.PropertyId && x.Value == model.Value);
+                        .FirstOrDefault(x => x.PropertyId == model.PropertyId && x.Value == model.Value && x.ValueEn == model.ValueEn);
 
                 var product = this.Data.Products.GetById(productId);
 
                 if (propertyValue == null)
                 {
-                    propertyValue = new PropertyValue { PropertyId = model.PropertyId, Value = model.Value };
+                    propertyValue = new PropertyValue { PropertyId = model.PropertyId, Value = model.Value, ValueEn = model.ValueEn };
                     propertyValue.Products.Add(product);
                     this.Data.PropertyValues.Add(propertyValue);
                 }

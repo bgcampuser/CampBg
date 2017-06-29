@@ -26,7 +26,7 @@
                 return pv => new ItemPropertyValueViewModel
                 {
                     Property = pv.Property.NameEn,
-                    Value = pv.Value
+                    Value = pv.ValueEn
                 };
             }
         }

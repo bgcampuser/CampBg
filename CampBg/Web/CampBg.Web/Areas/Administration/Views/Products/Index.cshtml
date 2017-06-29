@@ -111,6 +111,7 @@
                           col.Bound(x => x.Id);
                           col.ForeignKey(x => x.PropertyId, (IEnumerable)ViewBag.Properties, "Id", "Name");
                           col.Bound(x => x.Value);
+                          col.Bound(x => x.ValueEn);
                           col.Command(x =>
                               {
                                   x.Edit();

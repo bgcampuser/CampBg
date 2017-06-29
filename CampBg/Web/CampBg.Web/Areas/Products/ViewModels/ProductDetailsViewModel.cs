@@ -76,11 +76,11 @@
                                 .Select(x => new ProductPropertyViewModel
                                 {
                                     PropertyId = x.Key.Id,
-                                    Name = x.Key.Name,
+                                    Name = x.Key.NameEn,
                                     Values = x.Select(v => new PropertyValueViewModel
                                     {
                                         Id = v.Id,
-                                        Value = v.Value
+                                        Value = v.ValueEn
                                     })
                                 }),
                     Manufacturer = prod.Manufacturer.Name,

@@ -25,6 +25,8 @@
 
         public string Value { get; set; }
 
+        public string ValueEn { get; set; }
+
         public DateTime? DeletedOn { get; set; }
 
         public bool IsDeleted { get; set; }

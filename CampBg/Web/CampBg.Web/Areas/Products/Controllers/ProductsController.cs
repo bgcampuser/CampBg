@@ -122,13 +122,13 @@
                                 PropertyId = x.Key.Id,
                                 Values =
                                         x.Distinct()
-                                        .OrderBy(v => v.Value)
+                                        .OrderBy(v => v.ValueEn)
                                         .Select(
                                             z =>
                                             new PropertyValueViewModel
                                             {
                                                 Id = z.Id,
-                                                Value = z.Value
+                                                Value = z.ValueEn
                                             })
                             })
                         .ToList();
@@ -220,13 +220,13 @@
                                 PropertyId = x.Key.Id,
                                 Values =
                                     x.Distinct()
-                                    .OrderBy(v => v.Value)
+                                    .OrderBy(v => v.ValueEn)
                                     .Select(
                                         z =>
                                         new PropertyValueViewModel
                                         {
                                             Id = z.Id,
-                                            Value = z.Value
+                                            Value = z.ValueEn
                                         })
                             })
                         .ToList();
@@ -334,13 +334,13 @@
                                 PropertyId = x.Key.Id,
                                 Values =
                                     x.Distinct()
-                                    .OrderBy(v => v.Value)
+                                    .OrderBy(v => v.ValueEn)
                                     .Select(
                                         z =>
                                         new PropertyValueViewModel
                                         {
                                             Id = z.Id,
-                                            Value = z.Value
+                                            Value = z.ValueEn
                                         })
                             })
                         .ToList();

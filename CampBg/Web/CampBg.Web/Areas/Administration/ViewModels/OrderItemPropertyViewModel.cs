@@ -17,6 +17,7 @@
                                      Id = pv.Id,
                                      PropertyId = pv.PropertyId,
                                      PropertyValue = pv.Value,
+                                     PropertyValueEn = pv.ValueEn,
                                      PropertyValueId = pv.Id,
                                      Property = pv.Property.Name
                                  };
@@ -29,6 +30,9 @@
 
         [Required(AllowEmptyStrings = false)]
         public string PropertyValue { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public string PropertyValueEn { get; set; }
 
         public int PropertyId { get; set; }
 
