@@ -3,6 +3,8 @@
     using CampBg.Data.Contracts;
     using CampBg.Data.Models;
 
+    using Microsoft.AspNet.Identity.EntityFramework;
+
     public interface IUowData
     {
         IDeletableRepository<Category> Categories { get; }
@@ -32,6 +34,8 @@
         IDeletableRepository<Newsletter> Newsletters { get; }
 
         IUsersRepository Users { get; }
+
+        IRepository<IdentityRole> IdentityRoles { get; }
 
         IDeletableRepository<SearchTerm> SearchTerms { get; }
 

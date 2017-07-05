@@ -3,24 +3,44 @@
     using System.Linq;
     using System.Web.Mvc;
 
+    using CampBg.Data;
     using CampBg.Data.Models;
     using CampBg.Web.Areas.Administration.ViewModels;
 
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+
     public class UsersController : AdministrationBaseController
     {
+        public UsersController()
+            : this(new UserManager<UserProfile>(new UserStore<UserProfile>(new CampContext())))
+        {
+        }
+
+        public UsersController(UserManager<UserProfile> userManager)
+        {
+            this.UserManager = userManager;
+        }
+
+        public UserManager<UserProfile> UserManager { get; private set; }
+
         public ActionResult Index()
         {
+            this.ViewBag.IdentityRoles = this.Data.IdentityRoles.All().ToList();
+
+            this.ViewBag.UserRoles = this.Data.IdentityRoles.All().Select(r => new UserRoleViewModel { Text = r.Name, Id = r.Id }).ToList();
+
             return this.View();
         }
 
         public ActionResult Read([DataSourceRequest]DataSourceRequest request)
         {
-            var categories = this.Data.Users.All().Select(UserViewModel.FromUserProfile);
+            var users = this.Data.Users.All().Select(UserViewModel.FromUserProfile);
 
-            return this.Json(categories.ToDataSourceResult(request, this.ModelState));
+            return this.Json(users.ToDataSourceResult(request, this.ModelState));
         }
 
         public ActionResult Destroy(UserViewModel model)
@@ -41,7 +61,22 @@
         {
             var userToUpdate = this.Data.Users.GetById(model.Id);
 
-            this.TryUpdateModel(userToUpdate);
+            userToUpdate.UserName = model.UserName;
+            userToUpdate.Email = model.Email;
+            userToUpdate.IsSubscribedForNewsletter = model.IsSubscribedForNewsletter;
+            userToUpdate.IsDeleted = model.IsDeleted;
+            
+            foreach (var role in this.Data.IdentityRoles.All())
+            {
+                this.UserManager.RemoveFromRole(userToUpdate.Id, role.Name);
+            }
+
+            foreach (var role in model.UserRoles)
+            {
+                this.UserManager.AddToRole(userToUpdate.Id, role.Text);
+            }
+            
+
             this.Data.SaveChanges();
 
             return this.Json(model, JsonRequestBehavior.AllowGet);

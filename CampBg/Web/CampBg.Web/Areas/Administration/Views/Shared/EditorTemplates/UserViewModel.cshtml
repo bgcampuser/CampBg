@@ -1,5 +1,7 @@
 ﻿@model CampBg.Web.Areas.Administration.ViewModels.UserViewModel
 
+@using CampBg.Web.Areas.Administration.ViewModels
+
 <div class="form-group">
     @Html.HiddenFor(x => x.Id)
     <div class="editor-label">
@@ -32,5 +34,22 @@
     <div class="editor-field">
         @Html.EditorFor(x => x.IsDeleted)
         @Html.ValidationMessageFor(x => x.IsDeleted)
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(x => x.UserRoles)
+    </div>
+
+    <div class="editor-field">
+       @(Html.Kendo()
+            .MultiSelect()
+            .Name("UserRoles")
+            .Value("UserRolesIDs")
+            .DataTextField("Text")
+            .DataValueField("Id")
+            .BindTo(new SelectList((IEnumerable<UserRoleViewModel>)this.ViewBag.UserRoles, "Id", "Text"))
+            .Placeholder("No role selected"))
+
+        @Html.ValidationMessageFor(x => x.UserRoles)
     </div>
 </div>

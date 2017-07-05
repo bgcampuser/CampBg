@@ -1,8 +1,10 @@
 ﻿namespace CampBg.Web.Areas.Administration.ViewModels
 {
     using System;
+    using System.Linq;
     using System.ComponentModel.DataAnnotations;
     using System.Linq.Expressions;
+    using System.Collections.Generic;
 
     using CampBg.Data.Models;
 
@@ -23,7 +25,8 @@
                             IsDeleted = user.IsDeleted,
                             CreatedOn = user.CreatedOn,
                             DeletedOn = user.DeletedOn,
-                            PhoneNumber = user.PhoneNumber
+                            PhoneNumber = user.PhoneNumber,
+                            UserRolesIDs = user.Roles.Select(x => x.RoleId).ToList()
                         };
             }
         }
@@ -44,5 +47,11 @@
         public DateTime CreatedOn { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        public List<string> UserRolesIDs { get; set; }
+
+        public List<string> UserRolesValues { get; set; }
+
+        public IEnumerable<UserRoleViewModel> UserRoles { get; set; }
     }
 }

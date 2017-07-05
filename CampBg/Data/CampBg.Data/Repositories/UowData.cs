@@ -9,6 +9,8 @@
     using CampBg.Data.Repositories;
     using CampBg.Data.Repositories.Contracts;
 
+    using Microsoft.AspNet.Identity.EntityFramework;
+
     using IUsersRepository = CampBg.Data.Repositories.Contracts.IUsersRepository;
 
     public class UowData : IUowData
@@ -144,6 +146,15 @@
             }
         }
 
+        public IRepository<IdentityRole> IdentityRoles
+        {
+            get
+            {
+                return this.GetRepository<IdentityRole>();
+            }
+        }
+
+
         public IDeletableRepository<SearchTerm> SearchTerms
         {
             get
@@ -160,6 +171,20 @@
         public void Dispose()
         {
             this.context.Dispose();
+        }
+
+        private IRepository<T> GetRepository<T>() where T : class
+        {
+            var typeOfRepository = typeof(T);
+            if (!this.repositories.ContainsKey(typeOfRepository))
+            {
+                var type = typeof(GenericRepository<T>);
+                var newRepository = Activator.CreateInstance(type, this.context);
+
+                this.repositories.Add(typeOfRepository, newRepository);
+            }
+
+            return (IRepository<T>)this.repositories[typeOfRepository];
         }
 
         private IDeletableRepository<T> GetDeletableRepository<T>()

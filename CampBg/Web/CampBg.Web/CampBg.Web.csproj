@@ -257,6 +257,7 @@
     <Compile Include="Areas\Administration\ViewModels\PropertyViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\SliderImageViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\UserAddressViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\UserRoleViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\UserViewModel.cs" />
     <Compile Include="Areas\Orders\Controllers\OrdersController.cs" />
     <Compile Include="Areas\Orders\OrdersAreaRegistration.cs" />
