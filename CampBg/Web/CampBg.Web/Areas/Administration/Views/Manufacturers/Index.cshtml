@@ -19,7 +19,10 @@
             col.Command(x =>
             {
                 x.Edit();
-                x.Destroy();
+                if (this.User.IsInRole("Administrator"))
+                {
+                    x.Destroy();
+                }
             });
         })
         .ToolBar(toolbar =>

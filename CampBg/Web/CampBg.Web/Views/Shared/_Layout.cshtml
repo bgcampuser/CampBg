@@ -37,7 +37,7 @@
                             @Html.Partial("_ShoppingCart", (ShoppingCartMenuViewModel)this.ViewBag.Cart)
                         </div>
                         <div class="pull-right margin-right-small">
-                            @if (this.User.IsInRole("Administrator"))
+                            @if (this.User.IsInRole("Administrator") || this.User.IsInRole("Operator"))
                             {
                                 @Html.ActionLink("Admin", "Index", new { controller = "Home", area = "Administration" }, new { @class = "text-white pull-left margin-right-small" })
                             }

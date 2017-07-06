@@ -16,6 +16,8 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
+    using Microsoft.AspNet.Identity;
+
     using ImageProcessor;
     using ImageProcessor.Imaging;
 
@@ -97,6 +99,8 @@
 
         public ActionResult CreateProduct([DataSourceRequest]DataSourceRequest request, ProductViewModel model)
         {
+            var currentUser = this.Data.Users.GetById(this.User.Identity.GetUserId());
+
             if (this.ModelState.IsValid)
             {
                 var product = new Product
@@ -111,7 +115,9 @@
                                       SubcategoryOptionId = model.SubcategoryOptionId,
                                       IsPopular = model.IsPopular,
                                       ManufacturerIdentificationNumber = model.ManufacturerIdentificationNumber,
-                                  };
+                                      //CreatedBy = currentUser
+                };
+
                 this.Data.Products.Add(product);
                 this.Data.SaveChanges();
                 model.Id = product.Id;
@@ -122,7 +128,9 @@
 
         public ActionResult UpdateProduct([DataSourceRequest] DataSourceRequest request, ProductViewModel model)
         {
+            var currentUser = this.Data.Users.GetById(this.User.Identity.GetUserId());
             var product = this.Data.Products.GetById(model.Id);
+
             if (product == null)
             {
                 this.ModelState.AddModelError("Id", "Invalid id was provided");
@@ -150,6 +158,7 @@
                 product.SubcategoryOptionId = model.SubcategoryOptionId;
                 product.IsPopular = model.IsPopular;
                 product.ManufacturerIdentificationNumber = model.ManufacturerIdentificationNumber;
+                //product.ModifiedBy.Add(currentUser);
 
                 this.Data.SaveChanges();
             }

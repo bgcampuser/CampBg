@@ -41,15 +41,15 @@
     </div>
 
     <div class="editor-field">
-       @(Html.Kendo()
-            .MultiSelect()
+        @(Html.Kendo()
+            .MultiSelectFor(model => model.UserRoles)
             .Name("UserRoles")
-            .Value("UserRolesIDs")
             .DataTextField("Text")
             .DataValueField("Id")
-            .BindTo(new SelectList((IEnumerable<UserRoleViewModel>)this.ViewBag.UserRoles, "Id", "Text"))
+            .AutoBind(false)
+            .BindTo((IEnumerable<UserRoleViewModel>)this.ViewBag.UserRoles)
             .Placeholder("No role selected"))
-
+ 
         @Html.ValidationMessageFor(x => x.UserRoles)
     </div>
 </div>

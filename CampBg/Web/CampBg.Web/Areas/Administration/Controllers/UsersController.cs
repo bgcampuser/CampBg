@@ -65,17 +65,20 @@
             userToUpdate.Email = model.Email;
             userToUpdate.IsSubscribedForNewsletter = model.IsSubscribedForNewsletter;
             userToUpdate.IsDeleted = model.IsDeleted;
-            
-            foreach (var role in this.Data.IdentityRoles.All())
+
+            var roles = this.Data.IdentityRoles.All();
+
+            foreach (var role in roles)
             {
                 this.UserManager.RemoveFromRole(userToUpdate.Id, role.Name);
             }
 
             foreach (var role in model.UserRoles)
             {
-                this.UserManager.AddToRole(userToUpdate.Id, role.Text);
+                string roleText = roles.First(x => x.Id == role.Id).Name;
+                this.UserManager.AddToRole(userToUpdate.Id, roleText);
             }
-            
+
 
             this.Data.SaveChanges();
 

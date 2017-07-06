@@ -17,19 +17,22 @@
         .Grid<ProductViewModel>()
         .Name("ProductsGrid")
         .Columns(col =>
+        {
+            col.Bound(x => x.Id);
+            col.Bound(x => x.Name);
+            col.Bound(x => x.Price);
+            col.Bound(x => x.IsPopular);
+            col.Bound(x => x.ManufacturerIdentificationNumber);
+            col.ForeignKey(x => x.ManufacturerId, (IEnumerable)ViewBag.Manufacturers, "Id", "Name");
+            col.Command(x =>
             {
-                col.Bound(x => x.Id);
-                col.Bound(x => x.Name);
-                col.Bound(x => x.Price);
-                col.Bound(x => x.IsPopular);
-                col.Bound(x => x.ManufacturerIdentificationNumber);
-                col.ForeignKey(x => x.ManufacturerId, (IEnumerable)ViewBag.Manufacturers, "Id", "Name");
-                col.Command(x =>
-                    {
-                        x.Edit();
-                        x.Destroy();
-                    });
-            })
+                x.Edit();
+                if (this.User.IsInRole("Administrator"))
+                {
+                    x.Destroy();
+                }
+            });
+        })
         .ToolBar(toolbar =>
         {
             toolbar.Create();
@@ -42,17 +45,17 @@
             edit.Mode(GridEditMode.PopUp);
         })
         .Filterable(filter =>
-            {
-                filter.Enabled(true);
-            })
+        {
+            filter.Enabled(true);
+        })
         .Sortable(sort =>
-            {
-                sort.Enabled(true);
-            })
+        {
+            sort.Enabled(true);
+        })
         .Pageable(page =>
-            {
-                page.Refresh(true);
-            })
+        {
+            page.Refresh(true);
+        })
         .DataSource(data =>
         {
             data.Ajax()

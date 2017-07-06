@@ -26,8 +26,8 @@
                             CreatedOn = user.CreatedOn,
                             DeletedOn = user.DeletedOn,
                             PhoneNumber = user.PhoneNumber,
-                            UserRolesIDs = user.Roles.Select(x => x.RoleId).ToList()
-                        };
+                            UserRoles = user.Roles.Select(x => new UserRoleViewModel { Id = x.RoleId }).ToList()
+                    };
             }
         }
 
@@ -48,10 +48,6 @@
 
         public string PhoneNumber { get; set; }
 
-        public List<string> UserRolesIDs { get; set; }
-
-        public List<string> UserRolesValues { get; set; }
-
-        public IEnumerable<UserRoleViewModel> UserRoles { get; set; }
+        public List<UserRoleViewModel> UserRoles { get; set; }
     }
 }

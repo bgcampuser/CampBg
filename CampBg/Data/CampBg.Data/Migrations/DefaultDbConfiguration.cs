@@ -19,6 +19,8 @@
                                                                       };
 
         private const string AdministratorRoleString = "Administrator";
+        private const string OperatorRoleString = "Operator";
+        private const string CustomerRoleString = "Customer";
 
         public DefaultDbConfiguration()
         {
@@ -45,6 +47,22 @@
             {
                 administratorRole = new IdentityRole(AdministratorRoleString);
                 roles.Add(administratorRole);
+            }
+
+            var operatorRole = roles.FirstOrDefault(x => x.Name == OperatorRoleString);
+
+            if (operatorRole == null)
+            {
+                operatorRole = new IdentityRole(OperatorRoleString);
+                roles.Add(operatorRole);
+            }
+
+            var customerRole = roles.FirstOrDefault(x => x.Name == CustomerRoleString);
+
+            if (customerRole == null)
+            {
+                customerRole = new IdentityRole(CustomerRoleString);
+                roles.Add(customerRole);
             }
 
             var adminAccount = context.Users.FirstOrDefault(x => x.UserName == "admin");

@@ -5,60 +5,106 @@
 <h2>@ViewBag.Title</h2>
 
 @Styles.Render("/Content/administration/admin.css")
-<h3>Users</h3>
-<ul class="list-inline">
-    <li>
-        @Html.ActionLink("Users", "Index", new { controller = "Users" }, new { @class = "admin-button admin-button-users" })
-    </li>
-    <li>
-        @Html.ActionLink("Newsletter", "Index", new { controller = "Newsletter" }, new { @class = "admin-button admin-button-newsletter" })
-    </li>
-</ul>
+
+@if (this.User.IsInRole("Administrator"))
+{
+    <h3>Users</h3>
+    <ul class="list-inline">
+        <li>
+            @Html.ActionLink("Users", "Index", new { controller = "Users" }, new { @class = "admin-button admin-button-users" })
+        </li>
+        <li>
+            @Html.ActionLink("Newsletter", "Index", new { controller = "Newsletter" }, new { @class = "admin-button admin-button-newsletter" })
+        </li>
+    </ul>
+
+}
 
 <h3>Shop</h3>
 <ul class="list-inline">
-    <li>
-        @Html.ActionLink("Categories", "Index", new { controller = "Categories" }, new { @class = "admin-button admin-button-categories" })
-    </li>
-    <li>
-        @Html.ActionLink("Subcategories", "Index", new { controller = "Subcategories" }, new { @class = "admin-button admin-button-subcategories" })
-    </li>
-    <li>
-        @Html.ActionLink("Options", "Index", new { controller = "SubcategoryOptions" }, new { @class = "admin-button admin-button-subcategories-options" })
-    </li>
-    <li>
-        @Html.ActionLink("Properties", "Index", new { controller = "Properties" }, new { @class = "admin-button admin-button-properties" })
-    </li>
-    <li>
-        @Html.ActionLink("Products", "Index", new { controller = "Products" }, new { @class = "admin-button admin-button-products" })
-    </li>
-    <li>
-        @Html.ActionLink("Manufacturers", "Index", new { controller = "Manufacturers" }, new { @class = "admin-button admin-button-manufacturers" })
-    </li>
-    <li>
-        @Html.ActionLink("Orders", "Index", new { controller = "Orders" }, new { @class = "admin-button admin-button-orders" })
-    </li>
+    @if (this.User.IsInRole("Administrator"))
+    {
+        <li>
+            @Html.ActionLink("Categories", "Index", new { controller = "Categories" }, new { @class = "admin-button admin-button-categories" })
+        </li>
+    }
+
+    @if (this.User.IsInRole("Administrator"))
+    {
+        <li>
+            @Html.ActionLink("Subcategories", "Index", new { controller = "Subcategories" }, new { @class = "admin-button admin-button-subcategories" })
+        </li>
+    }
+   
+    @if (this.User.IsInRole("Administrator"))
+    {
+        <li>
+            @Html.ActionLink("Options", "Index", new { controller = "SubcategoryOptions" }, new { @class = "admin-button admin-button-subcategories-options" })
+        </li>
+    }
+
+    @if (this.User.IsInRole("Administrator"))
+    {
+        <li>
+            @Html.ActionLink("Options", "Index", new { controller = "SubcategoryOptions" }, new { @class = "admin-button admin-button-subcategories-options" })
+        </li>
+    }
+   
+    @if (this.User.IsInRole("Administrator") || this.User.IsInRole("Operator"))
+    {
+        <li>
+            @Html.ActionLink("Properties", "Index", new { controller = "Properties" }, new { @class = "admin-button admin-button-properties" })
+        </li>
+    }
+    
+    @if (this.User.IsInRole("Administrator") || this.User.IsInRole("Operator"))
+    {
+        <li>
+            @Html.ActionLink("Products", "Index", new { controller = "Products" }, new { @class = "admin-button admin-button-products" })
+        </li>
+    }
+
+    @if (this.User.IsInRole("Administrator") || this.User.IsInRole("Operator"))
+    {
+        <li>
+            @Html.ActionLink("Manufacturers", "Index", new { controller = "Manufacturers" }, new { @class = "admin-button admin-button-manufacturers" })
+        </li>
+    }
+    
+    @if (this.User.IsInRole("Administrator"))
+    {
+        <li>
+            @Html.ActionLink("Orders", "Index", new { controller = "Orders" }, new { @class = "admin-button admin-button-orders" })
+        </li>
+    }
+    
 </ul>
 
-<h3>CMS</h3>
-<ul class="list-inline">
-    <li>
-        @Html.ActionLink("Slider images", "Index", new { controller = "SliderImages" }, new { @class = "admin-button admin-button-slider-images" })
-    </li>
-    <li>
-        @Html.ActionLink("Pages", "Index", new { controller = "PageCategories" }, new { @class = "admin-button admin-button-static-pages" })
-    </li>
-    <li>
-        @Html.ActionLink("Files", "Index", new { controller = "Files" }, new { @class = "admin-button admin-button-static-pages" })
-    </li>
-</ul>
+@if (this.User.IsInRole("Administrator"))
+{
+    <h3>CMS</h3>
+    <ul class="list-inline">
+        <li>
+            @Html.ActionLink("Slider images", "Index", new { controller = "SliderImages" }, new { @class = "admin-button admin-button-slider-images" })
+        </li>
+        <li>
+            @Html.ActionLink("Pages", "Index", new { controller = "PageCategories" }, new { @class = "admin-button admin-button-static-pages" })
+        </li>
+        <li>
+            @Html.ActionLink("Files", "Index", new { controller = "Files" }, new { @class = "admin-button admin-button-static-pages" })
+        </li>
+    </ul>
+}
 
-<h3>Statistics</h3>
-<ul class="list-inline">
-    <li>
-        @Html.ActionLink("Order items", "Index", new { controller = "OrderItems" }, new { @class = "admin-button admin-button-stats" })
-    </li>
-    <li>
-        @Html.ActionLink("Search terms", "Index", new { controller = "SearchTerms" }, new { @class = "admin-button admin-button-search-stats" })
-    </li>
-</ul>
+@if (this.User.IsInRole("Administrator"))
+{
+    <h3>Statistics</h3>
+    <ul class="list-inline">
+        <li>
+            @Html.ActionLink("Order items", "Index", new { controller = "OrderItems" }, new { @class = "admin-button admin-button-stats" })
+        </li>
+        <li>
+            @Html.ActionLink("Search terms", "Index", new { controller = "SearchTerms" }, new { @class = "admin-button admin-button-search-stats" })
+        </li>
+    </ul>
+}

@@ -4,7 +4,7 @@
 
     using CampBg.Web.Controllers;
 
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator, Operator")]
     public class AdministrationBaseController : BaseController
     {
     }
