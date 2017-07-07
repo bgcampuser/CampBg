@@ -41,7 +41,7 @@
                                                                                                     Id = v.Id,
                                                                                                     Value = v.Value
                                                                                                 })
-                                                                   }),
+                                                                   }).OrderBy(x => x.PropertyId),
                                        Manufacturer = prod.Manufacturer.Name,
                                        RelatedProducts = prod.RelatedProducts
                                                             .AsQueryable()
@@ -82,7 +82,7 @@
                                         Id = v.Id,
                                         Value = v.ValueEn
                                     })
-                                }),
+                                }).OrderBy(x => x.PropertyId),
                     Manufacturer = prod.Manufacturer.Name,
                     RelatedProducts = prod.RelatedProducts
                                          .AsQueryable()
