@@ -42,6 +42,13 @@
                                                                                 x.Id,
                                                                                 x.Name
                                                                             });
+
+            this.ViewBag.Users = this.Data.Users.All().Select(x => new
+            {
+                x.Id,
+                x.UserName
+            });
+
             return this.View();
         }
 
@@ -115,7 +122,7 @@
                                       SubcategoryOptionId = model.SubcategoryOptionId,
                                       IsPopular = model.IsPopular,
                                       ManufacturerIdentificationNumber = model.ManufacturerIdentificationNumber,
-                                      //CreatedBy = currentUser
+                                      CreatedBy = currentUser
                 };
 
                 this.Data.Products.Add(product);
@@ -158,7 +165,7 @@
                 product.SubcategoryOptionId = model.SubcategoryOptionId;
                 product.IsPopular = model.IsPopular;
                 product.ManufacturerIdentificationNumber = model.ManufacturerIdentificationNumber;
-                //product.ModifiedBy.Add(currentUser);
+                product.ModifiedBy.Add(currentUser);
 
                 this.Data.SaveChanges();
             }

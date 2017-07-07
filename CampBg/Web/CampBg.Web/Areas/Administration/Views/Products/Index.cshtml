@@ -22,6 +22,7 @@
             col.Bound(x => x.Name);
             col.Bound(x => x.Price);
             col.Bound(x => x.IsPopular);
+            col.ForeignKey(x => x.CreatedById, (IEnumerable)ViewBag.Users, "Id", "UserName");
             col.Bound(x => x.ManufacturerIdentificationNumber);
             col.ForeignKey(x => x.ManufacturerId, (IEnumerable)ViewBag.Manufacturers, "Id", "Name");
             col.Command(x =>

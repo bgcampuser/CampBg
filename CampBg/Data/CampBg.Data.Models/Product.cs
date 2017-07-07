@@ -12,6 +12,7 @@
         {
             this.ProductImages = new HashSet<ProductImage>();
             this.PropertyValues = new HashSet<PropertyValue>();
+            this.ModifiedBy = new HashSet<UserProfile>();
         }
 
         public int Id { get; set; }
@@ -42,6 +43,11 @@
 
         [ForeignKey("SubcategoryOptionId")]
         public SubcategoryOption SubcategoryOption { get; set; }
+        
+        public string CreatedById { get; set; }
+
+        [ForeignKey("CreatedById")]
+        public UserProfile CreatedBy { get; set; }
 
         public bool IsPopular { get; set; }
 
@@ -59,5 +65,7 @@
         public virtual ICollection<PropertyValue> PropertyValues { get; set; }
 
         public virtual ICollection<Product> RelatedProducts { get; set; }
+
+        public virtual ICollection<UserProfile> ModifiedBy { get; set; }
     }
 }

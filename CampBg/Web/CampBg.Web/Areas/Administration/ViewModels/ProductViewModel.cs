@@ -32,6 +32,7 @@
                             SubcategoryOptionId = product.SubcategoryOptionId,
                             IsPopular = product.IsPopular,
                             ManufacturerIdentificationNumber = product.ManufacturerIdentificationNumber,
+                            CreatedById = product.CreatedById,
                             Properties = product.PropertyValues
                                                 .AsQueryable()
                                                 .Select(PropertyValueViewModel.FromPropertyValue)
@@ -83,5 +84,9 @@
         [Required]
         [Display(Name = "Категория")]
         public int CategoryId { get; set; }
+
+        [Required]
+        [Display(Name = "Създаден От")]
+        public string CreatedById { get; set; }
     }
 }
