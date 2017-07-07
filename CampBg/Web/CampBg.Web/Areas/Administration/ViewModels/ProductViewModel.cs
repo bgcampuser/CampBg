@@ -84,8 +84,7 @@
         [Required]
         [Display(Name = "Категория")]
         public int CategoryId { get; set; }
-
-        [Required]
+        
         [Display(Name = "Създаден От")]
         public string CreatedById { get; set; }
     }

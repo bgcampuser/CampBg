@@ -249,6 +249,19 @@
             return this.Json(related.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult ReadModifiedBy([DataSourceRequest] DataSourceRequest request, int id)
+        {
+            var product = this.Data.Products.GetById(id);
+
+            var related =
+                product.ModifiedBy
+                .AsQueryable()
+                .Where(x => !x.IsDeleted)
+                .Select(UserViewModel.FromUserProfile);
+
+            return this.Json(related.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult CreateRelated([DataSourceRequest] DataSourceRequest request, int id, ProductRelationViewModel model)
         {
             var product = this.Data.Products.GetById(id);
