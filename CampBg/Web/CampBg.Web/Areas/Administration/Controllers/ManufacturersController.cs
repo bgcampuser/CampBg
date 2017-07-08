@@ -13,7 +13,7 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
-    public class ManufacturersController : AdministrationBaseController
+    public class ManufacturersController : OperatorBaseController
     {
         private const string ManufacturerImageLocation = "/SiteContent/Manufacturers";
 

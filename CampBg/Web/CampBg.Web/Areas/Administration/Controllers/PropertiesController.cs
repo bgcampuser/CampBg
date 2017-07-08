@@ -10,7 +10,7 @@
     using Kendo.Mvc.Extensions;
     using Kendo.Mvc.UI;
 
-    public class PropertiesController : AdministrationBaseController
+    public class PropertiesController : OperatorBaseController
     {
         public ActionResult Index()
         {

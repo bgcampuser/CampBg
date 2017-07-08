@@ -524,3 +524,6 @@ a {
     text-overflow: ellipsis;
 }
 
+.k-widget.k-grid.k-secondary table {
+    table-layout: fixed;
+}

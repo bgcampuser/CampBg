@@ -12,26 +12,26 @@
         .Grid<OrderViewModel>()
         .Name("OrdersGrid")
         .Columns(col =>
+        {
+            col.Bound(x => x.Id);
+            col.Bound(x => x.UserId)
+                .ClientTemplate("#=ByUser#")
+                .ClientGroupFooterTemplate("Orders count: #=count#");
+            col.Bound(x => x.PhoneNumber).HeaderHtmlAttributes(new { style = "overflow: visible; white-space: normal" }); ;
+            col.Bound(x => x.EmailAddress).HeaderHtmlAttributes(new { style = "overflow: visible; white-space: normal" }); ;
+            col.Bound(x => x.OrderDate).Format("{0:H:mm, d/M/yyyy}");
+            col.Bound(x => x.IsPaid);
+            col.Bound(x => x.IsFinalized);
+            col.Bound(x => x.PaymentMethod).HeaderHtmlAttributes(new { style = "overflow: visible; white-space: normal" }); ;
+            col.Bound(x => x.Total)
+                .ClientFooterTemplate("Total: #=sum#")
+                .ClientGroupFooterTemplate("User total: #=sum#");
+            col.Command(x =>
             {
-                col.Bound(x => x.Id);
-                col.Bound(x => x.UserId)
-                    .ClientTemplate("#=ByUser#")
-                    .ClientGroupFooterTemplate("Orders count: #=count#");
-                col.Bound(x => x.PhoneNumber);
-                col.Bound(x => x.EmailAddress);
-                col.Bound(x => x.OrderDate).Format("{0:H:mm, d/M/yyyy}");
-                col.Bound(x => x.IsPaid);
-                col.Bound(x => x.IsFinalized);
-                col.Bound(x => x.PaymentMethod);
-                col.Bound(x => x.Total)
-                    .ClientFooterTemplate("Total: #=sum#")
-                    .ClientGroupFooterTemplate("User total: #=sum#");
-                col.Command(x =>
-                    {
-                        x.Edit();
-                        x.Destroy();
-                    });
-            })
+                x.Edit();
+                x.Destroy();
+            });
+        })
         .ToolBar(toolbar =>
         {
             toolbar.Create();
@@ -44,26 +44,26 @@
             edit.Mode(GridEditMode.PopUp);
         })
         .Filterable(filter =>
-            {
-                filter.Enabled(true);
-            })
+        {
+            filter.Enabled(true);
+        })
         .Sortable(sort =>
-            {
-                sort.Enabled(true);
-            })
+        {
+            sort.Enabled(true);
+        })
         .Pageable(page =>
-            {
-                page.Refresh(true);
-            })
+        {
+            page.Refresh(true);
+        })
         .DataSource(data =>
         {
             data.Ajax()
                 .Sort(x => x.Add(z => z.Id).Descending())
                 .Aggregates(x =>
-                    {
-                        x.Add(ord => ord.UserId).Count();
-                        x.Add(ord => ord.Total).Sum();
-                    })
+                {
+                    x.Add(ord => ord.UserId).Count();
+                    x.Add(ord => ord.Total).Sum();
+                })
                 .PageSize(15)
                 .Model(x => x.Id(model => model.Id))
                 .Read("GetOrders", "Orders")

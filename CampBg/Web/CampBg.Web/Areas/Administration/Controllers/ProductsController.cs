@@ -20,8 +20,9 @@
 
     using ImageProcessor;
     using ImageProcessor.Imaging;
+    using System;
 
-    public class ProductsController : AdministrationBaseController
+    public class ProductsController : OperatorBaseController
     {
         public ActionResult Index()
         {
@@ -153,6 +154,8 @@
                 }
             }
 
+            this.ModelState.Remove("LastModified");
+
             if (this.ModelState.IsValid)
             {
                 product.Name = model.Name;
@@ -169,6 +172,8 @@
 
                 this.Data.SaveChanges();
             }
+
+            model.LastModified = DateTime.Now;
 
             return this.Json(new[] { model }.ToDataSourceResult(request, this.ModelState), JsonRequestBehavior.AllowGet);
         }

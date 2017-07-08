@@ -25,6 +25,7 @@
             col.Bound(x => x.ManufacturerIdentificationNumber);
             col.ForeignKey(x => x.ManufacturerId, (IEnumerable)ViewBag.Manufacturers, "Id", "Name");
             col.ForeignKey(x => x.CreatedById, (IEnumerable)ViewBag.Users, "Id", "UserName");
+            col.Bound(x => x.LastModified).Format("{0:H:mm, d/M/yyyy}").HeaderHtmlAttributes(new { style = "overflow: visible; white-space: normal" });
             col.Command(x =>
             {
                 x.Edit();
@@ -106,8 +107,9 @@
     </div>
 
     <h5>Modified By</h5>
-     <div class="row">
-        @(Html.Kendo()
+    <div class="row">
+        <div class="col-lg-12">
+            @(Html.Kendo()
                   .Grid<UserViewModel>()
                   .Name("ProductModified_#=Id#")
                   .Columns(col =>
@@ -125,6 +127,7 @@
                       })
                   .Pageable(p => p.Refresh(true))
                   .HtmlAttributes(new { @class = "margin-top-small" }).ToClientTemplate())
+        </div>
     </div>
 
     <h5>Properties</h5>

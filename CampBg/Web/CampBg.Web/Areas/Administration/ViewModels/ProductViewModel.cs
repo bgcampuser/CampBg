@@ -31,6 +31,7 @@
                             SubcategoryId = product.SubcategoryId.Value,
                             SubcategoryOptionId = product.SubcategoryOptionId,
                             IsPopular = product.IsPopular,
+                            LastModified = product.ModifiedOn,
                             ManufacturerIdentificationNumber = product.ManufacturerIdentificationNumber,
                             CreatedById = product.CreatedById,
                             Properties = product.PropertyValues
@@ -78,14 +79,17 @@
 
         public IEnumerable<PropertyValueViewModel> Properties { get; set; }
 
-        [Display(Name = "Индификационен номер")]
+        [Display(Name = "Индиф. номер")]
         public string ManufacturerIdentificationNumber { get; set; }
 
         [Required]
         [Display(Name = "Категория")]
         public int CategoryId { get; set; }
         
-        [Display(Name = "Създаден От")]
+        [Display(Name = "Създаден от")]
         public string CreatedById { get; set; }
+
+        [Display(Name = "Редактиран на")]
+        public DateTime? LastModified { get; set; }
     }
 }

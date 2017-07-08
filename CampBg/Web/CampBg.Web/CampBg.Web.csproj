@@ -225,6 +225,7 @@
     <Compile Include="Areas\Administration\Controllers\HomeController.cs" />
     <Compile Include="Areas\Administration\Controllers\ManufacturersController.cs" />
     <Compile Include="Areas\Administration\Controllers\NewsletterController.cs" />
+    <Compile Include="Areas\Administration\Controllers\OperatorBaseController.cs" />
     <Compile Include="Areas\Administration\Controllers\SearchTermsController.cs" />
     <Compile Include="Areas\Administration\ViewModels\SearchTermViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\NewsletterViewModel.cs" />

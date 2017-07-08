@@ -16,7 +16,7 @@
             col.Bound(x => x.UserName);
             col.Bound(x => x.Email);
             col.Bound(x => x.PhoneNumber);
-            col.Bound(x => x.IsSubscribedForNewsletter);
+            col.Bound(x => x.IsSubscribedForNewsletter).HeaderHtmlAttributes(new { style = "overflow: visible; white-space: normal" }); ;
             col.Bound(x => x.IsDeleted).Hidden();
             col.Bound(x => x.CreatedOn).Format("{0:H:mm, d/M/yyyy}");
             col.Command(x =>
@@ -32,22 +32,22 @@
                 .Text("Back to administration");
         })
         .Editable(edit =>
-            {
-                edit.Mode(GridEditMode.PopUp);
-                edit.DisplayDeleteConfirmation(true);
-            })
+        {
+            edit.Mode(GridEditMode.PopUp);
+            edit.DisplayDeleteConfirmation(true);
+        })
         .Filterable(filter =>
-            {
-                filter.Enabled(true);
-            })
+        {
+            filter.Enabled(true);
+        })
         .Sortable(sort =>
-            {
-                sort.Enabled(true);
-            })
+        {
+            sort.Enabled(true);
+        })
         .Pageable(page =>
-            {
-                page.Refresh(true);
-            })
+        {
+            page.Refresh(true);
+        })
         .DataSource(data =>
         {
             data.Ajax()
