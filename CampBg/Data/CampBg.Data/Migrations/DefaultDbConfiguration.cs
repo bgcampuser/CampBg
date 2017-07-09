@@ -20,7 +20,6 @@
 
         private const string AdministratorRoleString = "Administrator";
         private const string OperatorRoleString = "Operator";
-        private const string CustomerRoleString = "Customer";
 
         public DefaultDbConfiguration()
         {
@@ -55,14 +54,6 @@
             {
                 operatorRole = new IdentityRole(OperatorRoleString);
                 roles.Add(operatorRole);
-            }
-
-            var customerRole = roles.FirstOrDefault(x => x.Name == CustomerRoleString);
-
-            if (customerRole == null)
-            {
-                customerRole = new IdentityRole(CustomerRoleString);
-                roles.Add(customerRole);
             }
 
             var adminAccount = context.Users.FirstOrDefault(x => x.UserName == "admin");

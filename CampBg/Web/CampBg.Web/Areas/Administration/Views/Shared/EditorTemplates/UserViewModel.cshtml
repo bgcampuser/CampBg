@@ -52,4 +52,12 @@
  
         @Html.ValidationMessageFor(x => x.UserRoles)
     </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(x => x.Password)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(x => x.Password)
+        @Html.ValidationMessageFor(x => x.Password)
+    </div>
 </div>

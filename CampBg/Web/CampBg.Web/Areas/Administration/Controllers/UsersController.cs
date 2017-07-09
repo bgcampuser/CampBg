@@ -29,8 +29,6 @@
 
         public ActionResult Index()
         {
-            this.ViewBag.IdentityRoles = this.Data.IdentityRoles.All().ToList();
-
             this.ViewBag.UserRoles = this.Data.IdentityRoles.All().Select(r => new UserRoleViewModel { Text = r.Name, Id = r.Id }).ToList();
 
             return this.View();
@@ -79,6 +77,15 @@
                 this.UserManager.AddToRole(userToUpdate.Id, roleText);
             }
 
+            if (!string.IsNullOrEmpty(model.Password))
+            {
+                IdentityResult removePassword = this.UserManager.RemovePassword(userToUpdate.Id);
+                if (removePassword.Succeeded)
+                {
+                   this.UserManager.AddPassword(userToUpdate.Id, model.Password);
+                }
+
+            }
 
             this.Data.SaveChanges();
 

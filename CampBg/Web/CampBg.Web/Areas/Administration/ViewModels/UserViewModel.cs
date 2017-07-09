@@ -26,6 +26,7 @@
                             CreatedOn = user.CreatedOn,
                             DeletedOn = user.DeletedOn,
                             PhoneNumber = user.PhoneNumber,
+                            Password = string.Empty,
                             UserRoles = user.Roles.Select(x => new UserRoleViewModel { Id = x.RoleId }).ToList()
                     };
             }
@@ -47,6 +48,9 @@
         public DateTime CreatedOn { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
 
         public List<UserRoleViewModel> UserRoles { get; set; }
     }
