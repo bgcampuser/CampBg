@@ -98,7 +98,7 @@
                                                 Id = z.Id,
                                                 Value = z.Value
                                             })
-                            })
+                            }).OrderBy(x => x.PropertyId)
                         .ToList();
             }
             else
@@ -130,7 +130,7 @@
                                                 Id = z.Id,
                                                 Value = z.ValueEn
                                             })
-                            })
+                            }).OrderBy(x => x.PropertyId)
                         .ToList();
             }
 
@@ -153,13 +153,16 @@
 
             FilterPageViewModel model;
 
+            var categoryEntity = this.Data.Categories.All().FirstOrDefault(x => x.Name == category || x.NameEn == category);
+            var subcategoryEntity = this.Data.Subcategories.All().FirstOrDefault(x => x.Name == name || x.NameEn == name);
+
             if (Thread.CurrentThread.CurrentCulture.Name == "bg-BG")
             {
                 products = this.Data.Products.All()
                                 .Where(
                                     x =>
-                                    x.Subcategory.Name == name
-                                    && x.Subcategory.Category.Name == category);
+                                    x.Subcategory.Name == subcategoryEntity.Name
+                                    && x.Subcategory.Category.Name == categoryEntity.Name);
 
                 model = new FilterPageViewModel
                 {
@@ -189,16 +192,21 @@
                                                 Id = z.Id,
                                                 Value = z.Value
                                             })
+                                            .OrderBy(p => p.Id)
                             })
+                            .OrderBy(x => x.PropertyId)
                         .ToList();
+
+                this.ViewBag.Category = categoryEntity.Name;
+                this.ViewBag.Subcategory = subcategoryEntity.Name;
             }
             else
             {
                 products = this.Data.Products.All()
                                 .Where(
                                     x =>
-                                    x.Subcategory.NameEn == name
-                                    && x.Subcategory.Category.NameEn == category);
+                                    x.Subcategory.NameEn == subcategoryEntity.NameEn
+                                    && x.Subcategory.Category.NameEn == categoryEntity.NameEn);
 
                 model = new FilterPageViewModel
                 {
@@ -228,8 +236,13 @@
                                             Id = z.Id,
                                             Value = z.ValueEn
                                         })
+                                        .OrderBy(p => p.Id)
                             })
+                            .OrderBy(x => x.PropertyId)
                         .ToList();
+
+                this.ViewBag.Category = categoryEntity.NameEn;
+                this.ViewBag.Subcategory = subcategoryEntity.NameEn;
             }
 
             model.Filters.ManufacturerFilter =
@@ -251,9 +264,6 @@
                 Minimum = products.Any() ? products.Min(z => z.Price) : 0m,
             };
 
-            this.ViewBag.Category = category;
-            this.ViewBag.Subcategory = name;
-
             model.InitialProducts = model.InitialProducts.Skip(page * PageSize).Take(PageSize);
             this.AttachPagination(products, page);
 
@@ -262,14 +272,21 @@
 
         public ActionResult BySubcategoryOption(string category, string subcategory, string subcategoryOption, int page = 0)
         {
+            var categoryEntity = this.Data.Categories.All().FirstOrDefault(x => x.Name == category || x.NameEn == category);
+            var subcategoryEntity = this.Data.Subcategories.All().FirstOrDefault(x => x.Name == subcategory || x.NameEn == subcategory);
+            var subcategoryOptionEntity = this.Data.SubcategoryOptions.All().FirstOrDefault(x => x.Name == subcategoryOption || x.NameEn == subcategoryOption);
+
             var products =
                 this.Data.Products.All()
                     .Where(
                         x =>
                         x.SubcategoryOption != null &&
-                        x.SubcategoryOption.Subcategory.Name == subcategory
-                        && x.SubcategoryOption.Subcategory.Category.Name == category
-                        && x.SubcategoryOption.Name == subcategoryOption);
+                        (x.SubcategoryOption.Subcategory.Name == subcategoryEntity.Name || 
+                         x.SubcategoryOption.Subcategory.NameEn == subcategoryEntity.NameEn) && 
+                        (x.SubcategoryOption.Subcategory.Category.Name == categoryEntity.Name || 
+                        x.SubcategoryOption.Subcategory.Category.NameEn == categoryEntity.NameEn) && 
+                        (x.SubcategoryOption.Name == subcategoryOptionEntity.Name ||
+                        x.SubcategoryOption.NameEn == subcategoryOptionEntity.NameEn));
 
             FilterPageViewModel model;
 
@@ -306,8 +323,14 @@
                                                 Id = z.Id,
                                                 Value = z.Value
                                             })
+                                            .OrderBy(p => p.Id)
                             })
+                            .OrderBy(x => x.PropertyId)
                         .ToList();
+
+                this.ViewBag.Category = categoryEntity.Name;
+                this.ViewBag.Subcategory = subcategoryEntity.Name;
+                this.ViewBag.SubcategoryOption = subcategoryOptionEntity.Name;
             }
             else
             {
@@ -341,9 +364,13 @@
                                         {
                                             Id = z.Id,
                                             Value = z.ValueEn
-                                        })
-                            })
+                                        }).OrderBy(p => p.Id)
+                            }).OrderBy(x => x.PropertyId)
                         .ToList();
+
+                this.ViewBag.Category = categoryEntity.NameEn;
+                this.ViewBag.Subcategory = subcategoryEntity.NameEn;
+                this.ViewBag.SubcategoryOption = subcategoryOptionEntity.NameEn;
             }
 
             model.Filters.ManufacturerFilter =
@@ -366,10 +393,6 @@
                 Maximum = targetProducts.Any() ? targetProducts.Max(x => x.Price) : 0m,
                 Minimum = targetProducts.Any() ? targetProducts.Min(z => z.Price) : 0m,
             };
-
-            this.ViewBag.Category = category;
-            this.ViewBag.Subcategory = subcategory;
-            this.ViewBag.SubcategoryOption = subcategoryOption;
 
             model.InitialProducts = model.InitialProducts.Skip(page * PageSize).Take(PageSize);
 

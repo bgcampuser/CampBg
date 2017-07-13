@@ -35,13 +35,6 @@
             @Html.ActionLink("Subcategories", "Index", new { controller = "Subcategories" }, new { @class = "admin-button admin-button-subcategories" })
         </li>
     }
-   
-    @if (this.User.IsInRole("Administrator"))
-    {
-        <li>
-            @Html.ActionLink("Options", "Index", new { controller = "SubcategoryOptions" }, new { @class = "admin-button admin-button-subcategories-options" })
-        </li>
-    }
 
     @if (this.User.IsInRole("Administrator"))
     {
