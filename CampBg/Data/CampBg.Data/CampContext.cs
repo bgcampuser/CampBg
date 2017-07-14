@@ -101,6 +101,16 @@
         {
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
 
+            modelBuilder.Entity<Product>()
+                        .HasMany(p => p.RelatedProducts)
+                        .WithMany()
+                        .Map(m =>
+                        {
+                            m.MapLeftKey("Id");
+                            m.MapRightKey("RelatedId");
+                            m.ToTable("RelatedProducts");
+                        });
+
             base.OnModelCreating(modelBuilder);
         }
     }

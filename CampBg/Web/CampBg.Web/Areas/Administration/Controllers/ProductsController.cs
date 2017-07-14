@@ -286,6 +286,7 @@
                 if (this.ModelState.IsValid)
                 {
                     product.RelatedProducts.Add(related);
+                    related.RelatedProducts.Add(product);
                     this.Data.SaveChanges();
                 }
             }
@@ -323,6 +324,7 @@
                     if (this.ModelState.IsValid)
                     {
                         product.RelatedProducts.Remove(relation);
+                        relation.RelatedProducts.Remove(product);
                         this.Data.SaveChanges();
                     }
                 }
