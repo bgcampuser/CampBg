@@ -252,6 +252,7 @@
                         !x.IsDeleted
                         && x.Products.Any(
                             z =>
+                            !z.IsDeleted &&
                             (z.Subcategory.Category.Name == category
                             && z.Subcategory.Name == name) ||
                             (z.Subcategory.Category.NameEn == category
@@ -380,6 +381,7 @@
                         !x.IsDeleted
                         && x.Products.Any(
                             z =>
+                            !z.IsDeleted &&
                             z.SubcategoryOption != null &&
                             z.SubcategoryOption.Subcategory.Category.Name == category
                             && z.SubcategoryOption.Subcategory.Name == subcategory

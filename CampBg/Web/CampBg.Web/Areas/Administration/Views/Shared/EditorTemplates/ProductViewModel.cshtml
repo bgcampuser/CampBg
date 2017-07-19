@@ -142,25 +142,7 @@
         @Html.ValidationMessageFor(x => x.SubcategoryId)
     </div>
 
-    @*<div class="editor-label">
-        @Html.LabelFor(x => x.CreatedById)
-    </div>
-    <div class="editor-field">
-        @(Html.Kendo()
-              .ComboBox()
-              .Value("CreatedBy")
-              .Name("CreatedById")
-              .DataValueField("Id")
-              .DataTextField("UserName")
-              .Placeholder("Select User...")
-              .Filter(FilterType.Contains)
-              .BindTo((IEnumerable)ViewBag.Users)
-              .HtmlAttributes(new { style = "width:85%;" })
-        )
-
-        @Html.ValidationMessageFor(x => x.CreatedById)
-    </div>*@
-
+  
     <script>
         function subcategoryOptionValidation(e) {
 
